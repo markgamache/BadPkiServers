@@ -19,37 +19,28 @@
 & snap install core; snap refresh core
 & snap install --classic certbot
 
+& wget https://nginx.org/download/nginx-1.18.0.tar.gz && tar zxvf nginx-1.18.0.tar.gz
+& wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz && tar xzvf pcre-8.44.tar.gz
+# zlib version 1.2.11
+& wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz
+& wget https://www.openssl.org/source/openssl-1.1.1j.tar.gz && tar xzvf openssl-1.1.1j.tar.gz
+#https://www.openssl.org/source/openssl-1.1.1j.tar.gz
+
+& rm -rf *.tar.gz
 
 function Install-NginxByName([string]$name)
 {
     if($name.Contains(" "))
     {
-        Write-Warning "$name is lame. Now spaces"
+        Write-Warning "$name is lame. No spaces"
         return
     }
 
-    & wget https://nginx.org/download/nginx-1.18.0.tar.gz && tar zxvf nginx-1.18.0.tar.gz
-    & wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz && tar xzvf pcre-8.44.tar.gz
-    # zlib version 1.2.11
-    & wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz
-    & wget https://www.openssl.org/source/openssl-1.1.1j.tar.gz && tar xzvf openssl-1.1.1j.tar.gz
-    #https://www.openssl.org/source/openssl-1.1.1j.tar.gz
-
-    & rm -rf *.tar.gz
+    
     & cd nginx-1.18.0
     & cp ~/nginx-1.18.0/man/nginx.8 /usr/share/man/man8
     & gzip -f /usr/share/man/man8/nginx.8
-    #ls /usr/share/man/man8/ | grep nginx.8.gz
-    # Check that Man page for NGINX is working:
-    #man nginx
-    #mkdir /usr/sbin/$($name)
-    #mkdir /usr/lib/$($name)
-    #&mkdir /usr/lib/$($name)/modules
-    #&mkdir /etc/$($name)
-    #&touch /etc/$($name)/nginx.conf
-    #touch /usr/sbin/$($name)
     
-
 
     & ./configure --prefix=/etc/$($name) `
     --sbin-path=/usr/sbin/$($name) `
@@ -141,9 +132,17 @@ WantedBy=multi-user.target
     & systemctl start "$($name).service"
 
     cd ..
-    Remove-Item -Recurse -Force ./nginx-1.18.0
     #https://nginx.org/download/nginx-1.18.0.tar.gz
 }
 
+
+
+
+Remove-Item -Recurse -Force ./nginx-1.18.0
+Remove-Item -Recurse -Force ./pcre-8.44
+Remove-Item -Recurse -Force ./zlib-1.2.11
+Remove-Item -Recurse -Force ./openssl-1.1.1j
 Install-NginxByName -name nginx1
 Install-NginxByName -name nginx2
+
+& chown -R QQmarkgamache /home/QQmarkgamache
