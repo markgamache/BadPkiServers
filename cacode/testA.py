@@ -837,24 +837,28 @@ def main(argv):
     global localPath
     localPath = Path( os.path.abspath(os.path.dirname(sys.argv[0])))
     
+    repBase = localPath.parent
+    intBase = repBase / certs / "int"
+    extBase = repBase / certs / "ext"
+
     #createNewTlsCsr("cert2.salesforce.com" , subjectPassphrase="ssssssss")
-
-    #createNewRootCA("Mark Trust Some Assurance Root CA")
+    localPath = intBase
+    createNewRootCA("Mark Trust Some Assurance Root CA")
     #signCsrNoQuestionsTlsServer("testFiles\\venafi-vip-2-domain.com.csr", "Mark Trust Some Assurance Root CA", None, None)
-    createNewRootCA("FireMon No Assurance Root CA")
-    createNewSubCA("FireMon No Assurance Assurance Int CA", "FireMon No Assurance Root CA", None, None )
+    #createNewRootCA("FireMon No Assurance Root CA")
+    #createNewSubCA("FireMon No Assurance Assurance Int CA", "FireMon No Assurance Root CA", None, None )
 
-    signCsrNoQuestionsTlsServer("testFiles\\ind1firemon01.xt.local.test.csr", "FireMon No Assurance Assurance Int CA", None, None)
+    #signCsrNoQuestionsTlsServer("testFiles\\ind1firemon01.xt.local.test.csr", "FireMon No Assurance Assurance Int CA", None, None)
 
     #use the mark1 CA to sign a sub
-    createNewSubCA("Mark Trust Some Assurance Int CA", "Mark Trust Some Assurance Root CA", None, None )
+    #createNewSubCA("Mark Trust Some Assurance Int CA", "Mark Trust Some Assurance Root CA", None, None )
 
-    createNewSubCA("Mark Trust TLS Issuer 01", "Mark Trust Some Assurance Int CA", None, None )
-    createNewSubCA("Mark Trust TLS Issuer 02", "Mark Trust Some Assurance Int CA", None, None )
+    #createNewSubCA("Mark Trust TLS Issuer 01", "Mark Trust Some Assurance Int CA", None, None )
+    #createNewSubCA("Mark Trust TLS Issuer 02", "Mark Trust Some Assurance Int CA", None, None )
 
 
-    createNewTlsCert("www.markgamache.com", "Mark Trust TLS Issuer 01", None, None)
-    createNewTlsCert("checkout.markgamache.com", "Mark Trust TLS Issuer 02", None, None)
+    #createNewTlsCert("www.markgamache.com", "Mark Trust TLS Issuer 01", None, None)
+    #createNewTlsCert("checkout.markgamache.com", "Mark Trust TLS Issuer 02", None, None)
     
 
     
