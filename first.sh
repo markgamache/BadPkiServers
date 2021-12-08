@@ -4,4 +4,4 @@
 #cd BadPkiServers
 #chmod +x instalnginx.ps1
 snap install powershell --classic
-./instalnginx.ps1
+./buildlab.ps1
