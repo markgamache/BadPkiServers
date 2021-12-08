@@ -838,8 +838,8 @@ def main(argv):
     localPath = Path( os.path.abspath(os.path.dirname(sys.argv[0])))
     
     repBase = localPath.parent
-    intBase = repBase / certs / "int"
-    extBase = repBase / certs / "ext"
+    intBase = (repBase / "certs") / "int"
+    extBase = (repBase / "certs") / "ext"
 
     #createNewTlsCsr("cert2.salesforce.com" , subjectPassphrase="ssssssss")
     localPath = intBase
