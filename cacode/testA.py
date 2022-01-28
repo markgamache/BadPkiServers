@@ -5,7 +5,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import datetime
-#from datetime import date
+from datetime import date
 import time
 import urllib.request
 import requests
@@ -34,32 +34,26 @@ class Mode(Enum):
     NewSubCA = 2
     NewLeaf = 3
 
-def newRSAKeyPair(size = 2048):
-    key = rsa.generate_private_key(
-    public_exponent=65537,
+def newRSAKeyPair(size=2048):
+    key = rsa.generate_private_key(public_exponent=65537,
     key_size=size,
-    backend=default_backend()
-    )
+    backend=default_backend())
     return key
 
 def keyToPemFile(keyIn, fileName, passphrase):
     
     if passphrase != None:
         with open(fileName, "wb") as f:
-            f.write(keyIn.private_bytes(
-            encoding=serialization.Encoding.PEM,
+            f.write(keyIn.private_bytes(encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.TraditionalOpenSSL,
-            encryption_algorithm=serialization.BestAvailableEncryption(bytes( passphrase, 'utf-8')),
-            ))
+            encryption_algorithm=serialization.BestAvailableEncryption(bytes(passphrase, 'utf-8')),))
     else:
         with open(fileName, "wb") as f:
-            f.write(keyIn.private_bytes(
-            encoding=serialization.Encoding.PEM,
+            f.write(keyIn.private_bytes(encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.TraditionalOpenSSL,
-            encryption_algorithm=serialization.NoEncryption()),
-            )
+            encryption_algorithm=serialization.NoEncryption()),)
 
-def readPemPrivateKeyFromFile(fileIn, passphrase = None):
+def readPemPrivateKeyFromFile(fileIn, passphrase=None):
     if os.path.isfile(fileIn):
         f = open(fileIn, "rb")
         public_pem_data = f.read()
@@ -68,32 +62,23 @@ def readPemPrivateKeyFromFile(fileIn, passphrase = None):
         key = cryptography.hazmat.primitives.serialization.load_pem_private_key(public_pem_data, passphrase ,  backend=default_backend())
 
         return key
-    else:
-        raise( "that ain't no file")
 
-def createNewRootCaCert(cnIn, keyIn, certFileName):
-    subject = issuer = x509.Name([
-     x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
+    else:
+        raise("that ain't no file")
+
+def createNewRootCaCert(cnIn, 
+        keyIn, 
+        certFileName, 
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(minutes=10) , 
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=1560)):
+
+    subject = issuer = x509.Name([x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
      x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u"California"),
      x509.NameAttribute(NameOID.LOCALITY_NAME, u"San Francisco"),
      x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"Gamache inc."),
-     x509.NameAttribute(NameOID.COMMON_NAME, (cnIn)),
-    ])
+     x509.NameAttribute(NameOID.COMMON_NAME, (cnIn)),])
 
-    cert = x509.CertificateBuilder().subject_name(
-     subject
-    ).issuer_name(
-     issuer
-    ).public_key(
-     keyIn.public_key()
-    ).serial_number(
-     x509.random_serial_number()
-    ).not_valid_before(
-     datetime.datetime.utcnow() -  datetime.timedelta(0, 600, 0)
-    ).not_valid_after(
-     # Our certificate will be valid for 10 days
-     datetime.datetime.utcnow() + datetime.timedelta(weeks=1000)
-    ).add_extension(x509.BasicConstraints(ca= True, path_length= None), critical = True).sign(keyIn, hashes.SHA256(), default_backend())
+    cert = x509.CertificateBuilder().subject_name(subject).issuer_name(issuer).public_key(keyIn.public_key()).serial_number(x509.random_serial_number()).not_valid_before(validFrom).not_valid_after(validTo).add_extension(x509.BasicConstraints(ca= True, path_length= None), critical = True).sign(keyIn, hashes.SHA256(), default_backend())
     # Write our certificate out to disk.
     with open(certFileName, "wb") as f:
         f.write(cert.public_bytes(serialization.Encoding.PEM))
@@ -105,7 +90,12 @@ def createNewRootCaCert(cnIn, keyIn, certFileName):
 
     return cert
 
-def createNewRootCA(shortName: str, thePath: Path, passphrase = None,  keysize = 4096):
+def createNewRootCA(shortName: str, 
+        thePath: Path, 
+        passphrase=None,  
+        keysize=4096, 
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(minutes=10) , 
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=1560)):
     
     if passphrase != None:
         passphrase = (passphrase)
@@ -118,10 +108,18 @@ def createNewRootCA(shortName: str, thePath: Path, passphrase = None,  keysize =
     thisOneKey = newRSAKeyPair(keysize)
     keyToPemFile(thisOneKey, thePath / "key.pem", passphrase)
 
-    theRoot =  createNewRootCaCert(shortName, thisOneKey, thePath / "cert.pem" )
+    theRoot = createNewRootCaCert(shortName, thisOneKey, thePath / "cert.pem")
     return theRoot
 
-def createNewSubCA(subjectShortName: str, issuerShortName: str, thePath: Path, subjectPassphrase = None, issuerPassphrase = None, keysize = 4096 , validTo: datetime = datetime.datetime.utcnow() + datetime.timedelta(weeks=500) , validFrom : datetime = datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0)):
+def createNewSubCA(subjectShortName: str,   
+        issuerShortName: str,  
+        thePath: Path, 
+        subjectPassphrase=None,  
+        issuerPassphrase=None,   
+        keysize=4096,  
+        isCA: bool=True,
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0),   
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=500)):
     
     if subjectPassphrase != None:
         subjectPassphrase = (subjectPassphrase)
@@ -141,7 +139,7 @@ def createNewSubCA(subjectShortName: str, issuerShortName: str, thePath: Path, s
     issCaKey = readPemPrivateKeyFromFile((thePath) / issuerShortName / "key.pem", issuerPassphrase)
     subCertFileName = subPath / "cert.pem"
 
-    theSubCACert = signSubCaCsrWithCaKey(theCsrWeNeed, issCert, issCaKey)
+    theSubCACert = signSubCaCsrWithCaKey(theCsrWeNeed, issCert, issCaKey, isCA, validFrom, validTo)
     # Write our certificate out to disk.
     with open(subCertFileName, "wb") as f:
         f.write(theSubCACert.public_bytes(serialization.Encoding.PEM))
@@ -153,7 +151,14 @@ def createNewSubCA(subjectShortName: str, issuerShortName: str, thePath: Path, s
 
     return theSubCACert
 
-def reSignSubCAWithSameKey(subjectShortName: str, issuerShortName: str, thePath: Path, subjectPassphrase = None, issuerPassphrase = None, validTo: datetime = datetime.datetime.utcnow() + datetime.timedelta(weeks=500) , validFrom : datetime = datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0)):
+def reSignSubCAWithSameKey(subjectShortName: str, 
+        issuerShortName: str, 
+        thePath: Path, 
+        subjectPassphrase=None, 
+        issuerPassphrase=None, 
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0) , 
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=500) ,
+        isCA: bool=True):
     
     if subjectPassphrase != None:
         subjectPassphrase = (subjectPassphrase)
@@ -161,15 +166,16 @@ def reSignSubCAWithSameKey(subjectShortName: str, issuerShortName: str, thePath:
     #create and test the folder for the sub
     subPath = (thePath) / subjectShortName
     if not os.path.isdir(subPath):
-        raise( "that ain't no folder")
+        raise("that ain't no folder")
     
     if not os.path.isfile(subPath / "key.pem"):
-        raise( "missing key.pem")
+        raise("missing key.pem")
     else:
-        os.rename(subPath / "key.pem", subPath / "key.pem.old")
+        pass
+        #os.rename(subPath / "key.pem", subPath / "key.pem.old")
 
     if not os.path.isfile(subPath / "cert.pem"):
-        raise( "missing cert.pem")
+        raise("missing cert.pem")
     else:
         os.rename(subPath / "cert.pem", subPath / "cert.pem.old")
 
@@ -187,7 +193,7 @@ def reSignSubCAWithSameKey(subjectShortName: str, issuerShortName: str, thePath:
     issCaKey = readPemPrivateKeyFromFile((thePath) / issuerShortName / "key.pem", issuerPassphrase)
     subCertFileName = subPath / "cert.pem"
 
-    theSubCACert = signSubCaCsrWithCaKey(theCsrWeNeed, issCert, issCaKey)
+    theSubCACert = signSubCaCsrWithCaKey(theCsrWeNeed, issCert, issCaKey, isCA, validFrom, validTo)
     # Write our certificate out to disk.
     with open(subCertFileName, "wb") as f:
         f.write(theSubCACert.public_bytes(serialization.Encoding.PEM))
@@ -201,29 +207,26 @@ def reSignSubCAWithSameKey(subjectShortName: str, issuerShortName: str, thePath:
 
 
 def createNewCsr(privKeyIn, cnIn):
-    thisCsr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([
-     # Provide various details about who we are.
+    thisCsr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([# Provide various details about who we are.
      x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
      x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u"California"),
      x509.NameAttribute(NameOID.LOCALITY_NAME, u"San Francisco"),
      x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"Gamache inc."),
-     x509.NameAttribute(NameOID.COMMON_NAME, cnIn), ])).sign(privKeyIn, hashes.SHA256(), default_backend())
+     x509.NameAttribute(NameOID.COMMON_NAME, cnIn),])).sign(privKeyIn, hashes.SHA256(), default_backend())
 
     return thisCsr
 
 def createNewCsrSFDC(privKeyIn, cnIn):
-    thisCsr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([
-     # Provide various details about who we are.
+    thisCsr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([# Provide various details about who we are.
      x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
      x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u"California"),
      x509.NameAttribute(NameOID.LOCALITY_NAME, u"San Francisco"),
      x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"Gamache inc."),
-     x509.NameAttribute(NameOID.COMMON_NAME, cnIn), ])).add_extension(x509.SubjectAlternativeName([x509.DNSName(cnIn)]), critical=False  
-    ).sign(privKeyIn, hashes.SHA256(), default_backend())
+     x509.NameAttribute(NameOID.COMMON_NAME, cnIn),])).add_extension(x509.SubjectAlternativeName([x509.DNSName(cnIn)]), critical=False).sign(privKeyIn, hashes.SHA256(), default_backend())
 
     return thisCsr
 
-def getFileNameFromCert(certIn : cryptography.x509):
+def getFileNameFromCert(certIn: cryptography.x509):
     
     cnPart = certIn.subject.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value
     cnPart = cnPart.replace(" " , "")
@@ -232,74 +235,55 @@ def getFileNameFromCert(certIn : cryptography.x509):
     
     return cnPart
  
-def signSubCaCsrWithCaKey(csrIn, issuerCert, caKeyIn ,  validTo: datetime = datetime.datetime.utcnow() + datetime.timedelta(weeks=500) , validFrom : datetime = datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0) ):
+def signSubCaCsrWithCaKey(csrIn, 
+        issuerCert, 
+        caKeyIn  , 
+        isCA: bool=True,
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0) ,  
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=500)):
     
-    #we need the CA priv Key,  CA cert to get issuer info, and the CSR
-    cert = x509.CertificateBuilder().subject_name(
-     csrIn.subject
-    ).issuer_name(
-     issuerCert.subject
-    ).public_key(
-     csrIn.public_key()
-    ).serial_number(
-     x509.random_serial_number()
-    ).not_valid_before(
-     datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0)
-    ).not_valid_after(
-     # Our certificate will be valid for 10 days
-     datetime.datetime.utcnow() + datetime.timedelta(weeks=500)
-    ).add_extension(x509.BasicConstraints(ca= True, path_length= None), critical = True ).sign(caKeyIn, hashes.SHA256(), default_backend())
+    #we need the CA priv Key, CA cert to get issuer info, and the CSR
+    cert = x509.CertificateBuilder().subject_name(csrIn.subject).issuer_name(issuerCert.subject).public_key(csrIn.public_key()).serial_number(x509.random_serial_number()).not_valid_before(validFrom).not_valid_after(validTo)
+
+    if isCA:
+        cert = cert.add_extension(x509.BasicConstraints(ca= True, path_length= None), critical = True)
+    else:
+        cert = cert.add_extension(x509.BasicConstraints(ca= False, path_length= None), critical = True)
+
+    cert = cert.sign(caKeyIn, hashes.SHA256(), default_backend())
 
     return cert
 
-def signTlsCsrWithCaKey(csrIn, issuerCert, caKeyIn):
+def signTlsCsrWithCaKey(csrIn, 
+        issuerCert, 
+        caKeyIn,
+        isCA: bool=True,
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0) ,  
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=52)):
     
     hostname = csrIn.subject.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value
-    #we need the CA priv Key,  CA cert to get issuer info, and the CSR
-    cert = x509.CertificateBuilder().subject_name(
-     csrIn.subject
-    ).issuer_name(
-     issuerCert.subject
-    ).public_key(
-     csrIn.public_key()
-    ).serial_number(
-     x509.random_serial_number()
-    ).not_valid_before(
-     datetime.datetime.utcnow()
-    ).not_valid_after(
-     # Our certificate will be valid for 10 days
-     datetime.datetime.utcnow() + datetime.timedelta(weeks=52)
-    ).add_extension(x509.ExtendedKeyUsage([x509.ExtendedKeyUsageOID.SERVER_AUTH]), critical=True 
-    ).add_extension(x509.BasicConstraints(ca= False, path_length= None), critical = True
-    ).add_extension(x509.SubjectAlternativeName([x509.DNSName(hostname)]), critical=False  
-    ).sign(caKeyIn, hashes.SHA256(), default_backend())
+    #we need the CA priv Key, CA cert to get issuer info, and the CSR
+    cert = x509.CertificateBuilder().subject_name(csrIn.subject).issuer_name(issuerCert.subject).public_key(csrIn.public_key()).serial_number(x509.random_serial_number()).not_valid_before(validFrom).not_valid_after(validTo).add_extension(x509.ExtendedKeyUsage([x509.ExtendedKeyUsageOID.SERVER_AUTH]), critical=True).add_extension(x509.BasicConstraints(ca= False, path_length= None), critical = True).add_extension(x509.SubjectAlternativeName([x509.DNSName(hostname)]), critical=False).sign(caKeyIn, hashes.SHA256(), default_backend())
 
     return cert
 
 def signTlsCsrWithCaKeyNoAddSan(csrIn, issuerCert, caKeyIn):
     
     hostname = csrIn.subject.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value
-    #we need the CA priv Key,  CA cert to get issuer info, and the CSR
-    cert = x509.CertificateBuilder().subject_name(
-     csrIn.subject
-    ).issuer_name(
-     issuerCert.subject
-    ).public_key(
-     csrIn.public_key()
-    ).serial_number(
-     x509.random_serial_number()
-    ).not_valid_before(
-     datetime.datetime.utcnow()
-    ).not_valid_after(
-     # Our certificate will be valid for 10 days
-     datetime.datetime.utcnow() + datetime.timedelta(weeks=52)
-    ).add_extension(x509.ExtendedKeyUsage([x509.ExtendedKeyUsageOID.SERVER_AUTH]), critical=True 
-    ).add_extension(x509.BasicConstraints(ca= False, path_length= None), critical = True
-    ).sign(caKeyIn, hashes.SHA256(), default_backend())
+    #we need the CA priv Key, CA cert to get issuer info, and the CSR
+    cert = x509.CertificateBuilder().subject_name(csrIn.subject).issuer_name(issuerCert.subject).public_key(csrIn.public_key()).serial_number(x509.random_serial_number()).not_valid_before(datetime.datetime.utcnow()).not_valid_after(# Our certificate will be valid for 10 days
+     datetime.datetime.utcnow() + datetime.timedelta(weeks=52)).add_extension(x509.ExtendedKeyUsage([x509.ExtendedKeyUsageOID.SERVER_AUTH]), critical=True).add_extension(x509.BasicConstraints(ca= False, path_length= None), critical = True).sign(caKeyIn, hashes.SHA256(), default_backend())
 
     return cert
 
-def createNewTlsCert(subjectShortName: str, issuerShortName: str, thePath : Path, subjectPassphrase = None, issuerPassphrase = None):
+def createNewTlsCert(subjectShortName: str, 
+        issuerShortName: str, 
+        thePath: Path, 
+        subjectPassphrase=None, 
+        issuerPassphrase=None,
+        isCA: bool=True,
+        validFrom: datetime=datetime.datetime.utcnow() - datetime.timedelta(0, 600, 0) ,  
+        validTo: datetime=datetime.datetime.utcnow() + datetime.timedelta(weeks=52)):
     
     if subjectPassphrase != None:
         subjectPassphrase = (subjectPassphrase)
@@ -333,13 +317,13 @@ def createNewTlsCert(subjectShortName: str, issuerShortName: str, thePath : Path
     
     return theTlsCert
 
-def createNewTlsCsr(subjectShortName: str, subjectPassphrase = None):
+def createNewTlsCsr(subjectShortName: str, subjectPassphrase=None):
     
     if subjectPassphrase != None:
         subjectPassphrase = (subjectPassphrase)
 
     #create the folder for the sub
-    thePath = (Path( localPath)) / subjectShortName
+    thePath = (Path(localPath)) / subjectShortName
     os.mkdir(thePath)
 
     #create key and key file
@@ -351,13 +335,11 @@ def createNewTlsCsr(subjectShortName: str, subjectPassphrase = None):
 
     fileName = thePath / "file.csr"
     with open(fileName, "wb") as f:
-            f.write(theCsrWeNeed.public_bytes(
-            encoding=serialization.Encoding.PEM),
-            )
+            f.write(theCsrWeNeed.public_bytes(encoding=serialization.Encoding.PEM),)
 
     print(" ")
 
-def readCertFile(fileNameIn : Path):
+def readCertFile(fileNameIn: Path):
     
     if os.path.isfile(fileNameIn):
         with open(fileNameIn, "rb") as f:
@@ -372,7 +354,7 @@ def readCertFile(fileNameIn : Path):
         print("{} is not a file".format(fileNameIn))
         raise
 
-def loadCertsFromFolder(folderName : Path) -> list:
+def loadCertsFromFolder(folderName: Path) -> list:
     dBack = list()
     for r, d, f in os.walk(folderName, topdown=False):
         #print(r)
@@ -387,11 +369,11 @@ def loadCertsFromFolder(folderName : Path) -> list:
             #do work
             theRes = (readCertFileListBack(fullName)[0])
             if theRes != None:
-                dBack.append( theRes)
+                dBack.append(theRes)
 
     return dBack
 
-def parseCertsFromPEMs(pemText : str) -> list:
+def parseCertsFromPEMs(pemText: str) -> list:
     """
     this creates a list of x509 objects from text that is PEMs cat'd together
     """
@@ -422,7 +404,7 @@ def parseCertsFromPEMs(pemText : str) -> list:
 
     return realist
 
-def bIsThisCertInThisList(cert : x509.Certificate, certList : list) -> bool:
+def bIsThisCertInThisList(cert: x509.Certificate, certList: list) -> bool:
     """
     Checks if one cert is in a list of certs and returns a bool
     """
@@ -434,7 +416,7 @@ def bIsThisCertInThisList(cert : x509.Certificate, certList : list) -> bool:
     
     return bIsInList
 
-def diffCertLists(leftList : list, rightList : list) -> dict:
+def diffCertLists(leftList: list, rightList: list) -> dict:
     """
     Return diff between to lists of certs    
     """
@@ -456,10 +438,10 @@ def diffCertLists(leftList : list, rightList : list) -> dict:
             #in left but not in right
             #missingFromRight.append(oRight)
             
-    result =  {'MissingFromRight' : missingFromRight , 'MissingFromLeft' : missingFromLeft}
+    result = {'MissingFromRight' : missingFromRight , 'MissingFromLeft' : missingFromLeft}
     return result
 
-def appendFile(file : Path, text : str):
+def appendFile(file: Path, text: str):
     tFile = open(file, "a")
     tFile.write(text)
     tFile.flush()
@@ -535,7 +517,7 @@ def readCertFileListBack(file: Path) -> list:
     else:
         print("{} is not a file".format(file))
 
-def screen(data : str):
+def screen(data: str):
     """
     If verbose, print to screen
     """
@@ -554,17 +536,11 @@ def findParentCertInList(child, certList):
             signer_public_key = isThatYouDad.public_key()
 
             if isinstance(signer_public_key, rsa.RSAPublicKey):
-                verifier = signer_public_key.verifier(
-                    signature_bytes, padding.PKCS1v15(), signature_hash_algorithm
-                )
+                verifier = signer_public_key.verifier(signature_bytes, padding.PKCS1v15(), signature_hash_algorithm)
             elif isinstance(signer_public_key, ec.EllipticCurvePublicKey):
-                verifier = signer_public_key.verifier(
-                    signature_bytes, ec.ECDSA(signature_hash_algorithm)
-                )
+                verifier = signer_public_key.verifier(signature_bytes, ec.ECDSA(signature_hash_algorithm))
             else:
-                verifier = signer_public_key.verifier(
-                    signature_bytes, signature_hash_algorithm
-                )
+                verifier = signer_public_key.verifier(signature_bytes, signature_hash_algorithm)
 
             verifier.update(child.tbs_certificate_bytes)
             try:
@@ -575,20 +551,20 @@ def findParentCertInList(child, certList):
                 pass
     return found
 
-def bIsRootCA(cert : cryptography.x509.Certificate) -> bool:
+def bIsRootCA(cert: cryptography.x509.Certificate) -> bool:
 
     if cert.issuer.rfc4514_string() == cert.subject.rfc4514_string() and bIsCA(cert):
         return True
     else:
         return False
 
-def bIsCA(cert : cryptography.x509.Certificate) -> bool:
+def bIsCA(cert: cryptography.x509.Certificate) -> bool:
 
     for ext in cert.extensions:
         if ext.oid._name == "basicConstraints":
             return ext.value.ca
 
-def getIssuerFromAIA(certIn : cryptography.x509.Certificate) -> cryptography.x509.Certificate:
+def getIssuerFromAIA(certIn: cryptography.x509.Certificate) -> cryptography.x509.Certificate:
     """
     Use the AIA to get a copy of the Issuer cert.  Works with HTTP only, no LDAP now.
     """
@@ -614,11 +590,11 @@ def getIssuerFromAIA(certIn : cryptography.x509.Certificate) -> cryptography.x50
     if not found:
         return False
 
-def printCertList(certList : list()):
+def printCertList(certList: list()):
     for cer in certList:
         print(cer.subject.rfc4514_string())
 
-def createOrderedCertChain(certs : list, intBaseFolder) -> list:
+def createOrderedCertChain(certs: list, intBaseFolder) -> list:
     """
     Takes in a cert or list of certs. Finds the entity cert to start the chain. Then builds the chain, first from cacerts list, if applicable.
     Then trying AIA, and finally the Mozilla root list as needed.
@@ -649,10 +625,10 @@ def createOrderedCertChain(certs : list, intBaseFolder) -> list:
     child = entityCert
     while(True):
 
-        folderCerts = loadCertsFromFolder( intBaseFolder)
+        folderCerts = loadCertsFromFolder(intBaseFolder)
         parent = findParentCertInList(child, folderCerts)
         if parent == False:
-            #todo: incomplete chain need to use AIA to get parent  
+            #todo: incomplete chain need to use AIA to get parent
             parent = getIssuerFromAIA(child)
             if parent == False:
                 global mozRoots
@@ -677,7 +653,7 @@ def createOrderedCertChain(certs : list, intBaseFolder) -> list:
 
         child = parent
 
-def certListToCatdPEM(certs : list):
+def certListToCatdPEM(certs: list):
     pemData = ""
     for cert in certs:
         ccc = (cert.public_bytes(encoding=serialization.Encoding.PEM)).decode("utf-8")
@@ -722,14 +698,14 @@ def getMozillaRoots() -> list:
         print("Couldn't {}\n\n".format(url))
         raise
 
-def getCnFromRDN(rdn : cryptography.x509.name.Name) -> str:
+def getCnFromRDN(rdn: cryptography.x509.name.Name) -> str:
     for part in rdn:
         if part.oid._name == "commonName":
             return part.value
 
     return None
      
-def analyzeChainFile(certList : list):
+def analyzeChainFile(certList: list):
     
     i = 0
     for oCert in certList:
@@ -755,7 +731,7 @@ def buildChain(certIn, shortName, intBaseFolder):
     wFile.write(strOfPEMs)
     wFile.close()
 
-def signNewCrlByCaPath(caFolderPath: Path, Serials: list , DayToEnd: int , Force : bool = False ):
+def signNewCrlByCaPath(caFolderPath: Path, Serials: list , DayToEnd: int , Force: bool=False):
     
     if isinstance(Serials, int):
         tempS = Serials
@@ -773,7 +749,7 @@ def signNewCrlByCaPath(caFolderPath: Path, Serials: list , DayToEnd: int , Force
     else:
         days_to_end = datetime.timedelta(DayToEnd, 0, 0)
         minus_10_min = datetime.timedelta(0, 600, 0)
-        #load CA cert and keys 
+        #load CA cert and keys
         caFile = caFolderPath / "cert.pem"
         if os.path.isfile(caFile):
             certs = list()
@@ -809,21 +785,21 @@ def signNewCrlByCaPath(caFolderPath: Path, Serials: list , DayToEnd: int , Force
 
         for mem in Serials:
             # add serial
-            revoked_cert = x509.RevokedCertificateBuilder().serial_number(mem).revocation_date(datetime.datetime.today() -  minus_10_min).build()
+            revoked_cert = x509.RevokedCertificateBuilder().serial_number(mem).revocation_date(datetime.datetime.today() - minus_10_min).build()
             builder = builder.add_revoked_certificate(revoked_cert)
         
          #write CRL file
-        crl = builder.sign( caKey, algorithm=hashes.SHA256())
+        crl = builder.sign(caKey, algorithm=hashes.SHA256())
         with open(caFolderPath / "ca.crl", "wb") as f:
             f.write(crl.public_bytes(serialization.Encoding.PEM))
        
     return True
 
-def signCsrNoQuestionsTlsServer(csrFile:Path(), issuerShortName: str, subjectPassphrase = None, issuerPassphrase = None  ):
+def signCsrNoQuestionsTlsServer(csrFile:Path(), issuerShortName: str, subjectPassphrase=None, issuerPassphrase=None):
     #load the csr
     csr = None
     if os.path.isfile(csrFile):
-        fh = open(csrFile, "rb" )
+        fh = open(csrFile, "rb")
         fData = fh.read()
         fh.close()
         try:
@@ -843,18 +819,18 @@ def signCsrNoQuestionsTlsServer(csrFile:Path(), issuerShortName: str, subjectPas
 
         subjectShortName = getCnFromRDN(csr.subject)
         #create the folder for the sub
-        thePath = (Path( localPath)) / subjectShortName
+        thePath = (Path(localPath)) / subjectShortName
         os.mkdir(thePath)
 
-        #create key and key file. NOt needed for CSR only
+        #create key and key file.  NOt needed for CSR only
         #thisOneKey = newRSAKeyPair(2048)
         #keyToPemFile(thisOneKey, thePath / "key.pem", subjectPassphrase)
                 
         #we have key and folder create CSR and sign
         #theCsrWeNeed = createNewCsr(thisOneKey, subjectShortName)
         theCsrWeNeed = csr
-        issCert = readCertFile(((Path( localPath)) / issuerShortName) / "cert.pem")
-        issCaKey = readPemPrivateKeyFromFile(((Path( localPath)) / issuerShortName) / "key.pem", issuerPassphrase)
+        issCert = readCertFile(((Path(localPath)) / issuerShortName) / "cert.pem")
+        issCaKey = readPemPrivateKeyFromFile(((Path(localPath)) / issuerShortName) / "key.pem", issuerPassphrase)
         subCertFileName = thePath / "cert.pem"
 
         theTlsCert = signTlsCsrWithCaKeyNoAddSan(theCsrWeNeed, issCert, issCaKey)
@@ -872,8 +848,6 @@ def signCsrNoQuestionsTlsServer(csrFile:Path(), issuerShortName: str, subjectPas
         return theTlsCert
 
 #end fucntions
-
-
 global currentMode
 currentMode = None
 
@@ -896,18 +870,19 @@ def main(argv):
         opts, args = getopt.getopt(argv,"hm:n:vs:c:", ["mode=","help", "name=", "signer=", "csr="])
     except getopt.GetoptError as optFail:
         print(optFail.msg)
-        print(syntax )
+        print(syntax)
         sys.exit(2)
     
     if len(args) > 0:
         print("You have an argument set that is not tied to a switch")
-        print(syntax )
+        print(syntax)
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == "-n" or opt == "--name":
             #this is the new CA short name
-            #need to check for folder name and if not there. if there throw. if not create foler and CA later
+            #need to check for folder name and if not there.  if there throw.
+            #if not create foler and CA later
             global subjectCN  
             subjectCN = arg
             pass
@@ -917,13 +892,13 @@ def main(argv):
             global currentMode
             if arg == Mode.NewRootCA.name:
                 
-                currentMode =  Mode.NewRootCA
+                currentMode = Mode.NewRootCA
             elif arg == Mode.NewSubCA.name:
                 
-                currentMode =  Mode.NewSubCA
+                currentMode = Mode.NewSubCA
             elif arg == Mode.NewLeaf.name:
                 
-                currentMode =  Mode.NewLeaf
+                currentMode = Mode.NewLeaf
             else:
                 print("Your mode must be NewRootCA, NewSubCA, or NewLeaf")
                 print(syntax)
@@ -953,58 +928,82 @@ def main(argv):
 
     #magic begins here
     global localPath
-    localPath = Path( os.path.abspath(os.path.dirname(sys.argv[0])))
+    localPath = Path(os.path.abspath(os.path.dirname(sys.argv[0])))
     
     repBase = localPath.parent
     intBase = (repBase / "certs") / "int"
     extBase = (repBase / "certs") / "ext"
 
-    #createNewTlsCsr("cert2.salesforce.com" , subjectPassphrase="ssssssss")
+    #createNewTlsCsr("WdVKQx.carrs.canary.test.sfdc.net" , subjectPassphrase="ssssssss")
     #localPath = intBase
-    newRootCA = createNewRootCA("Mark Trust Some Assurance Root CA", intBase)
-    subToRevoke = createNewSubCA("Gamache Some Assurance ICA 2018", "Mark Trust Some Assurance Root CA", intBase, None, None, datetime.datetime.utcnow() + datetime.timedelta(weeks=500) , datetime.date(2018, 1,1) )
+    janOf2018 = datetime.datetime(2018, 1,1)
+    janOf2028 = datetime.datetime(2028, 1,1)
+    janOf2048 = datetime.datetime(2048, 1,1)
+
+
+    dtMinusOneHour = datetime.datetime.utcnow() - datetime.timedelta(hours=1)
+    dtMinusTwoYears = datetime.datetime.utcnow() - datetime.timedelta(weeks=104)
+    dtPlusOneYear = datetime.datetime.utcnow() + datetime.timedelta(weeks=52)
+
+    tsOneYear = datetime.timedelta(weeks=52)
+    tsTenMin = datetime.timedelta(minutes=10)
+
+
+    newRootCA = createNewRootCA("Mark Trust Some Assurance Root CA", intBase, None, 4096, janOf2018, janOf2048)
+    intForLong = createNewSubCA("Gamache Int CA 2018", "Mark Trust Some Assurance Root CA", intBase, None, None, 4096, True, janOf2018, janOf2028)
+
+    subToRevoke = createNewSubCA("Gamache Some Assurance ICA 2018", "Mark Trust Some Assurance Root CA", intBase, None, None, 4096, True, janOf2018, janOf2028)
 
     #Website.badpkilab.markgamache.com
     websiteRevoked = createNewTlsCert("website.badpkilab.markgamache.com", "Gamache Some Assurance ICA 2018" , intBase, None, None)
 
-    signNewCrlByCaPath( intBase / "Mark Trust Some Assurance Root CA" , subToRevoke.serial_number, 356 , False)
+    signNewCrlByCaPath(intBase / "Mark Trust Some Assurance Root CA" , subToRevoke.serial_number, 356 , False)
 
-
+    #we want to create a CSR and cert wiht the same Keys, but differnt SN and maybe dates too...
     newerCA = reSignSubCAWithSameKey("Gamache Some Assurance ICA 2018", "Mark Trust Some Assurance Root CA", intBase, None, None)
     #rename the revoked ICA
-    #os.rename(intBase / "Gamache Some Assurance ICA 2018" , intBase / "Gamache Some Assurance ICA 2018 Revoked")
+    #os.rename(intBase / "Gamache Some Assurance ICA 2018" , intBase / "Gamache
+    #Some Assurance ICA 2018 Revoked")
     
-    #new version issuer to be replaces with same key version . not revoked. for alt path mess
-    newTempInt = createNewSubCA("Gamache Server ICA", "Gamache Some Assurance ICA 2018", intBase, None, None, datetime.datetime.utcnow() - datetime.timedelta(hours=1), datetime.datetime.utcnow() - datetime.timedelta(weeks=104) )
-    finalICA = reSignSubCAWithSameKey("Gamache Server ICA", "Gamache Some Assurance ICA 2018", intBase, None, None)
+    #new version issuer to be replaces with same key version .  not revoked.
+    #for alt path mess
+    newTempInt = createNewSubCA("Gamache Server ICA", "Gamache Some Assurance ICA 2018", intBase, None, None, dtMinusTwoYears , dtMinusOneHour)
+    finalICA = reSignSubCAWithSameKey("Gamache Server ICA", "Gamache Some Assurance ICA 2018", intBase, None, None) 
+    
     
 
-    #signCsrNoQuestionsTlsServer("testFiles\\venafi-vip-2-domain.com.csr", "Mark Trust Some Assurance Root CA", None, None)
+
+    #signCsrNoQuestionsTlsServer("testFiles\\venafi-vip-2-domain.com.csr",
+    #"Mark Trust Some Assurance Root CA", None, None)
     #createNewRootCA("FireMon No Assurance Root CA")
-    #createNewSubCA("FireMon No Assurance Assurance Int CA", "FireMon No Assurance Root CA", None, None )
+    #createNewSubCA("FireMon No Assurance Assurance Int CA", "FireMon No
+    #Assurance Root CA", None, None )
 
-    #signCsrNoQuestionsTlsServer("testFiles\\ind1firemon01.xt.local.test.csr", "FireMon No Assurance Assurance Int CA", None, None)
+    #signCsrNoQuestionsTlsServer("testFiles\\ind1firemon01.xt.local.test.csr",
+    #"FireMon No Assurance Assurance Int CA", None, None)
 
     #use the mark1 CA to sign a sub
-    #createNewSubCA("Mark Trust Some Assurance Int CA", "Mark Trust Some Assurance Root CA", None, None )
+    #createNewSubCA("Mark Trust Some Assurance Int CA", "Mark Trust Some
+    #Assurance Root CA", None, None )
 
-    #createNewSubCA("Mark Trust TLS Issuer 01", "Mark Trust Some Assurance Int CA", None, None )
-    #createNewSubCA("Mark Trust TLS Issuer 02", "Mark Trust Some Assurance Int CA", None, None )
+    #createNewSubCA("Mark Trust TLS Issuer 01", "Mark Trust Some Assurance Int
+    #CA", None, None )
+    #createNewSubCA("Mark Trust TLS Issuer 02", "Mark Trust Some Assurance Int
+    #CA", None, None )
 
 
-    #createNewTlsCert("www.markgamache.com", "Mark Trust TLS Issuer 01", None, None)
-    #createNewTlsCert("checkout.markgamache.com", "Mark Trust TLS Issuer 02", None, None)
+    #createNewTlsCert("www.markgamache.com", "Mark Trust TLS Issuer 01", None,
+    #None)
+    #createNewTlsCert("checkout.markgamache.com", "Mark Trust TLS Issuer 02",
+    #None, None)
     
 
     
     print("cats") 
-    #thisKey =  newRSAKeyPair()  
+    #thisKey = newRSAKeyPair()
 
     #keyToPemFile(thisKey, "nopass.pem", None)
     #keyToPemFile(thisKey, "yesPass.pem", "thePass")
-    
-
-
 if __name__ == "__main__":
     main(sys.argv[1:])
  
