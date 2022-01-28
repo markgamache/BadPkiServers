@@ -11,3 +11,5 @@
 & apt install nginx -y
 & apt-get install nginx-extras
 
+& git clone https://github.com/markgamache/labPkiPy.git
+
