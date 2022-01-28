@@ -9,7 +9,7 @@
 
 & apt install awscli -y
 & apt install nginx -y
-& apt-get install nginx-extras
+& apt-get install nginx-extras -y
 
 & git clone https://github.com/markgamache/labPkiPy.git
 
