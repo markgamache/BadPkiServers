@@ -2,7 +2,10 @@
 cd /home/ubuntu/labPkiPy
 
 $baseP = "/etc/nginx/pki"
-$artifacts = $baseP + "artifacts/"
+mkdir $baseP
+$artifacts = $baseP + "/artifacts/"
+mkdir $artifacts
+
 $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
 
 
