@@ -6,6 +6,9 @@
 & curl https://get.acme.sh | sh
 & snap install core; snap refresh core
 & snap install --classic certbot
+& apt install python3-pip -y
+& pip install mock
+& pip install cryptography --upgrade
 
 & apt install awscli -y
 & apt install nginx -y
