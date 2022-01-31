@@ -13,3 +13,5 @@
 
 & git clone https://github.com/markgamache/labPkiPy.git
 
+& mkdir /etc/nginx/pki
+
