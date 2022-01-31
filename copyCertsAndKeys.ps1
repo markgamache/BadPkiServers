@@ -30,7 +30,7 @@ $names += $n1
 $n2 = [string[]] ($dnsNamesLE.Split("`n"))
 $names += $n2
 
-
+mkdir /etc/nginx/pki
 
 foreach($n in $names)
 {

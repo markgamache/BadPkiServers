@@ -1,4 +1,5 @@
-﻿cd C:\reallyHopeThisWorks\labPkiPy
+﻿#! /snap/bin/pwsh
+cd C:\reallyHopeThisWorks\labPkiPy
 
 $baseP = "C:\Users\mark.gamache\Downloads\BadTlsLab\BadTlsLab\Certs\"
 $artifacts = $baseP + "artifacts\"
