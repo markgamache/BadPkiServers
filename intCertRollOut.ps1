@@ -6,16 +6,16 @@ mkdir $baseP
 $artifacts = $baseP + "/artifacts/"
 mkdir $artifacts
 
-$baseHTTP = "http://pki.badlab.markgamache.com/pki/"
+$baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
 
 
 # Gamache Trust Root 2018
-    $did = & python3 ./DoCAStuff.py --mode NewRootCA --basepath $baseP --name "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2048 --keysize 4096 --pathlength 2
+    $did = & python3 ./DoCAStuff.py --mode NewRootCA --basepath $baseP --name "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2048 --keysize 4096 --pathlength 2 --ncallowed pkilab.markgamache.com
     $certBack = $did | ConvertFrom-Json
     $rootCert = $certBack
 
     #AIA
-    "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt" -Encoding ascii
+    "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii
     Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
     #crl
@@ -36,7 +36,7 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl  
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
         "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 1" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
@@ -51,12 +51,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         $intCA = $certBack
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt" -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl  
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt" -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 1" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -74,12 +74,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         $intCA = $certBack
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt" -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl  
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt" -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -91,12 +91,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         $certBack = $did | ConvertFrom-Json
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt"  -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -104,7 +104,7 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
     
 
         #revoke this cert
-        $certBack.serial| Out-File -FilePath "$($intCA.basePath)//revoked.txt"  -Encoding ascii -Append
+        $certBack.serial| Out-File -FilePath "$($intCA.basePath)/revoked.txt"  -Encoding ascii -Append
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($intCA.serial).crl"
@@ -125,12 +125,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         $certBack = $did | ConvertFrom-Json
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt"  -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -146,12 +146,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         $certBack = $did | ConvertFrom-Json
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt"  -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -168,12 +168,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         $certBack = $did | ConvertFrom-Json
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt"  -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -190,16 +190,16 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
 
 
     # Gamache Server HA ICA  new
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Server HA ICA" --signer "Gamache Int CA 2018" --validfrom dtMinusTwoYears --validto dtPlusFiveYears --keysize 2048 --pathlength 0
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Server HA ICA" --signer "Gamache Int CA 2018" --validfrom dtMinusTwoYears --validto dtPlusFiveYears --keysize 2048 --pathlength 0 --ncallowed newpkilab.markgamache.com --ncdisallowed threat.pkilab.markgamache.com
         $certBack = $did | ConvertFrom-Json
 
         #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
         #crl
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt"  -Encoding ascii
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -238,7 +238,13 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "notgreat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --isca True
             $did | ConvertFrom-Json
 
-            
+             #  threat.pkilab.markgamache.com the cert should have CN, but no san
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "threat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
+             #  best.newpkilab.markgamache.com the cert should have CN, but no san
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "best.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
 
 
 #Gamache Client ICA
@@ -246,12 +252,12 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
     $certBack = $did | ConvertFrom-Json
 
     #AIA
-    "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)//aia.txt"  -Encoding ascii
+    "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
     Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
 
     #crl
-    "badf00d" | Out-File -FilePath "$($certBack.basePath)//revoked.txt"  -Encoding ascii
-    "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)//cdp.txt"  -Encoding ascii
+    "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+    "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii
     $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Client ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear 
     $crlBack = $did | ConvertFrom-Json
     Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
@@ -266,12 +272,6 @@ $baseHTTP = "http://pki.badlab.markgamache.com/pki/"
         # thesealion  client certr from client CA
         $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "thesealion" --signer "Gamache Client ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
         $did | ConvertFrom-Json
-
-
-# website.pkilab.markgamache.com we need to send with the old ICA Cert.
-$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "website.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
-$did | ConvertFrom-Json
-
 
 
 
