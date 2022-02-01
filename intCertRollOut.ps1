@@ -42,8 +42,6 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
  
-        #ren "$($certBack.basePath)cert.pem" "$($certBack.basePath)certold.pem"
-
 
     # Gamache Super ICA 1 
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Super ICA 1" --signer "Gamache Int CA 1" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 0
@@ -204,7 +202,7 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
-        #todo the big list of messups
+        #the big list of messups
 
              # disher.pkilab.markgamache.com the cert should have CN, but no san
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
@@ -226,9 +224,22 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "marrion.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --noekus
             $did | ConvertFrom-Json
 
-            # buy.pkilab.markgamache.com the intent is to send the issuer, but not the int CA todo. grab the issuer cert and append it to a new certandchain file
+            # buy.pkilab.markgamache.com the intent is to send the issuer, but not the int CA 
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "buy.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
+            #make the short chain 
+            Remove-Item "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem)"
+            cp "$($baseP)/buy.pkilab.markgamache.com/cert.pem)"  "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem)"
+            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem)" | Out-File -Encoding ascii -FilePath "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem)"
+
+
+            # soclose.pkilab.markgamache.com the intent is to send the cert with no chain
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "soclose.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+            #make the short chain 
+            Remove-Item "$($baseP)/soclose.pkilab.markgamache.com/certwithchain.pem)"
+            cp "$($baseP)/soclose.pkilab.markgamache.com/cert.pem)"  "$($baseP)/soclose.pkilab.markgamache.com/certwithchain.pem)"
+            
 
              # yang.pkilab.markgamache.com the cert should have CN, but no san
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "yang.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
@@ -273,5 +284,8 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
         $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "thesealion" --signer "Gamache Client ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
         $did | ConvertFrom-Json
 
+#perms on the keys
+
+& chmod -R 664 /etc/nginx/pki/*
 
 
