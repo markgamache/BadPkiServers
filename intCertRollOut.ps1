@@ -228,17 +228,17 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "buy.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
             #make the short chain 
-            Remove-Item "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem)"
-            cp "$($baseP)/buy.pkilab.markgamache.com/cert.pem)"  "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem)"
-            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem)" | Out-File -Encoding ascii -FilePath "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem)"
+            Remove-Item "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
+            cp "$($baseP)/buy.pkilab.markgamache.com/cert.pem"  "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
+            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem" | Out-File -Encoding ascii -FilePath "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
 
 
             # soclose.pkilab.markgamache.com the intent is to send the cert with no chain
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "soclose.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
             #make the short chain 
-            Remove-Item "$($baseP)/soclose.pkilab.markgamache.com/certwithchain.pem)"
-            cp "$($baseP)/soclose.pkilab.markgamache.com/cert.pem)"  "$($baseP)/soclose.pkilab.markgamache.com/certwithchain.pem)"
+            Remove-Item "$($baseP)/soclose.pkilab.markgamache.com/certwithchain.pem"
+            cp "$($baseP)/soclose.pkilab.markgamache.com/cert.pem"  "$($baseP)/soclose.pkilab.markgamache.com/certwithchain.pem"
             
 
              # yang.pkilab.markgamache.com the cert should have CN, but no san
