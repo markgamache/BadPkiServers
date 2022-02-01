@@ -230,7 +230,7 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
             #make the short chain 
             Remove-Item "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
             cp "$($baseP)/buy.pkilab.markgamache.com/cert.pem"  "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
-            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem" | Out-File -Encoding ascii -FilePath "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
+            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem" | Out-File -Encoding ascii -FilePath "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem" -Append
 
 
             # soclose.pkilab.markgamache.com the intent is to send the cert with no chain
