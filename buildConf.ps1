@@ -37,12 +37,13 @@ server {
         index index.html index.htm index.nginx-debian.html;
 
         server_name pki.pkilab.markgamache.com;
-        location = / {  
-            autoindex on;
-            types {
+        types {
                 application/pkix-crl    crl;
                 application/pkix-cert   crt;
             }
+        location = / {  
+            autoindex on;
+            
         }
         
 }
