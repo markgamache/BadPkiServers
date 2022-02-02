@@ -38,4 +38,6 @@ Copy-Item /etc/nginx/pki/artifacts/*.* /var/www/pki.pkilab.markgamache.com/
 
 
 & systemctl reload nginx
+
+Start-Sleep -Seconds 2
 & systemctl start nginx

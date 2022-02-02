@@ -62,7 +62,7 @@ $instHTML = @"
 
 foreach($n in $names)
 {
-    $instHTML += "<a href=`"$($n)`">$($n)</a>"
+    $instHTML += "<a href=`"$($n)`">http://$($n)</a>"
     $instHTML += "<br>"
 
 }
