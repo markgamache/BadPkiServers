@@ -25,7 +25,7 @@ cd ./BadPkiServers/
 ./intCertRollOut.ps1
 
 cd ..
-
+cd ./BadPkiServers/ 
 ./buildConf.ps1
 
 ./setupFolders.ps1
