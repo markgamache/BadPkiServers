@@ -204,9 +204,9 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
 
         #the big list of messups
 
-             # disher.pkilab.markgamache.com the cert should have CN, but no san
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
-            $did | ConvertFrom-Json
+             # disher.pkilab.markgamache.com the cert should have CN, but no san  no small keys  =(
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
+            #$did | ConvertFrom-Json
 
              # banking.pkilab.markgamache.com the cert should have CN, but no san
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
@@ -216,9 +216,9 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # burrito.pkilab.markgamache.com the cert should have CN, but no san
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "burrito.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --hash SHA1
-            $did | ConvertFrom-Json
+             # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "burrito.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --hash SHA1
+            #$did | ConvertFrom-Json
 
             # marrion.pkilab.markgamache.com noekus
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "marrion.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --noekus
@@ -245,9 +245,9 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "yang.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
             $did | ConvertFrom-Json
 
-             # notgreat.pkilab.markgamache.com the cert should have CN, but no san
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "notgreat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --isca True
-            $did | ConvertFrom-Json
+             # notgreat.pkilab.markgamache.com claims to be a CA
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "notgreat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --isca True
+            #$did | ConvertFrom-Json
 
              #  threat.pkilab.markgamache.com the cert should have CN, but no san
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "threat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 

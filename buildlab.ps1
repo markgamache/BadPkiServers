@@ -13,7 +13,7 @@
 & apt install awscli -y
 & apt install nginx -y
 & apt-get install nginx-extras -y
-
+& sudo apt install net-tools
 cd .. 
 
 & git clone https://github.com/markgamache/labPkiPy.git
