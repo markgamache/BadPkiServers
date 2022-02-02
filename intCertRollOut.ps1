@@ -286,6 +286,6 @@ $baseHTTP = "http:/pki.badlab.markgamache.com/pki/"
 
 #perms on the keys
 
-& chmod -R 664 /etc/nginx/pki/*
+& chmod -R 777 /etc/nginx/pki/*
 
 

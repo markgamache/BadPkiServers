@@ -36,4 +36,4 @@ $html = @"
 }
 
 
-& chmod -R 664 /var/www/*
+& chmod -R 777 /var/www/*

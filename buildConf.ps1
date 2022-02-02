@@ -86,6 +86,6 @@ $bigSrting += $httpsSplat
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.old
 $bigSrting | Out-File -Encoding ascii -FilePath /etc/nginx/sites-available/default
 
-& chmod -R 664 /var/www/*
+& chmod -R 777 /var/www/*
 
 Write-Host "" -NoNewline
