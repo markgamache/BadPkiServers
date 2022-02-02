@@ -6,7 +6,7 @@ mkdir $baseP
 $artifacts = $baseP + "/artifacts/"
 mkdir $artifacts
 
-$baseHTTP = "http:/pki.pkilab.markgamache.com/pki/"
+$baseHTTP = "http:/pki.pkilab.markgamache.com/"
 
 
 # Gamache Trust Root 2018
@@ -17,6 +17,8 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/pki/"
     #AIA
     "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii
     Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
+    Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/_LabRoot.crt"
+
 
     #crl
     "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
