@@ -136,7 +136,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # scotus.pkilab.markgamache.com we this one should be good.
+        # scotus.pkilab.markgamache.com we this one should be good.  Todo. this one is sending the old chain. fix build chain
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "scotus.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
     

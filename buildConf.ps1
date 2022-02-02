@@ -52,6 +52,26 @@ server {
 
 $bigSrting += $defSplat
 
+#instructions 
+
+$defSplat = @'
+server {
+        listen 80;
+        
+        root /var/www/instructions.pkilab.markgamache.com;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name instructions.pkilab.markgamache.com;
+
+
+        
+}
+
+'@
+
+$bigSrting += $defSplat
 
 foreach($n in $names)
 {
