@@ -33,8 +33,9 @@ cd ./BadPkiServers/
 $baseP = "/etc/nginx/pki"
 $artifacts = $baseP + "/artifacts/"
 
-mkdir /var/www/pki.badlab.markgamache.com
-Copy-Item -Destination /var/www/pki.badlab.markgamache.com -Path $artifacts *.*
+mkdir /var/www/pki.pkilab.markgamache.com
+Copy-Item /etc/nginx/pki/artifacts/*.* /var/www/pki.pkilab.markgamache.com/
 
 
 & systemctl reload nginx
+& systemctl start nginx

@@ -31,12 +31,12 @@ $defSplat = @'
 server {
         listen 80;
         
-        root /var/www/pki.badlab.markgamache.com;
+        root /var/www/pki.pkilab.markgamache.com;
 
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;
 
-        server_name pki.badlab.markgamache.com;
+        server_name pki.pkilab.markgamache.com;
         location = / {  
             autoindex on;
         }
