@@ -1,6 +1,6 @@
 ﻿#! /snap/bin/pwsh
 
-$names = (dir /etc/nginx/pki | where Name -like "*.*").name | ConvertTo-Json -Compress
+$names = (dir /etc/nginx/pki | where Name -like "*.*").name 
 
 $bigSrting = ""
 

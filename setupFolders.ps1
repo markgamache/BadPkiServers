@@ -1,5 +1,5 @@
 ﻿#! /snap/bin/pwsh
-$names = (dir /etc/nginx/pki | where Name -like "*.*").name | ConvertTo-Json -Compress
+$names = (dir /etc/nginx/pki | where Name -like "*.*").name 
 
 
 foreach($n in $names)
@@ -29,9 +29,11 @@ $html = @"
 
 
 "@ 
-Write-Host $html
+#Write-Host $html
 
-$html |  Out-File -FilePath "/var/www/$($n)/index.html" 
+    $html |  Out-File -FilePath "/var/www/$($n)/index.html"  -Force
 
 }
 
+
+& chmod -R 664 /var/www/*
