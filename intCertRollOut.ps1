@@ -60,7 +60,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/pki/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # walter.pkilab.markgamache.com we need to send with the old ICA Cert.
+        # walter.pkilab.markgamache.com .  Path len on int should break
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "walter.pkilab.markgamache.com" --signer "Gamache Super ICA 1" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
@@ -85,7 +85,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/pki/"
 
 
     # Gamache Some Assurance ICA 2018  old
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Some Assurance ICA 2018" --signer "Gamache Int CA 2018" --validfrom janOf2018 --validto dtPlusFiveYears --keysize 2048 --pathlength 0
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Some Assurance ICA 2018" --signer "Gamache Int CA 2018" --validfrom janOf2018 --validto marchOf2018 --keysize 2048 --pathlength 0
         $certBack = $did | ConvertFrom-Json
 
         #AIA
@@ -134,7 +134,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/pki/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # scotus.pkilab.markgamache.com we need to send with the old ICA Cert.
+        # scotus.pkilab.markgamache.com we this one should be good.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "scotus.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
     
