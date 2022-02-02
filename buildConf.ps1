@@ -1,7 +1,7 @@
 ﻿#! /snap/bin/pwsh
 
 $names = (dir /etc/nginx/pki | where Name -like "*.*").name 
-#$names += "pki.badlab.markgamache.com"
+
 
 $bigSrting = ""
 
@@ -39,6 +39,10 @@ server {
         server_name pki.pkilab.markgamache.com;
         location = / {  
             autoindex on;
+            types {
+                application/pkix-crl    crl;
+                application/pkix-cert   crt;
+            }
         }
         
 }
