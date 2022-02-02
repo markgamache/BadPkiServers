@@ -1,39 +1,11 @@
 ﻿#! /snap/bin/pwsh
-$dnsNamesPVT = @'
-website.lab.markgamache.com
-freestuff.lab.markgamache.com
-invest.lab.markgamache.com
-buy.lab.markgamache.com
-sell.lab.markgamache.com
-notgreat.lab.markgamache.com
-'@
+$names = (dir /etc/nginx/pki | where Name -like "*.*").name | ConvertTo-Json -Compress
 
-$dnsNamesLE = @'
-youwin.lab.markgamache.com
-main.lab.markgamache.com
-tents.lab.markgamache.com
-great.lab.markgamache.com
-surprise.lab.markgamache.com
-money.lab.markgamache.com
-api.lab.markgamache.com
-weak.lab.markgamache.com
-'@
-
-
-
-$names = @()
-
-$n1 = [string[]] ($dnsNamesPVT.Split("`n"))
-$names += $n1
-
-$n2 = [string[]] ($dnsNamesLE.Split("`n"))
-$names += $n2
 
 foreach($n in $names)
 {
-    $n = $n.Replace("`r","")
-    New-Item -ItemType Directory -Path "/var/www/" -Name $($n) -ErrorAction SilentlyContinue
-    New-Item -ItemType Directory -Path "/etc/nginx/pki/" -Name $($n) -ErrorAction SilentlyContinue
+    #New-Item -ItemType Directory -Path "/var/www/" -Name $($n) -ErrorAction SilentlyContinue
+    #New-Item -ItemType Directory -Path "/etc/nginx/pki/" -Name $($n) -ErrorAction SilentlyContinue
 
 $html = @"
 <!DOCTYPE html>

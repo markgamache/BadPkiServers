@@ -1,34 +1,6 @@
 ﻿#! /snap/bin/pwsh
-$dnsNamesPVT = @'
-website.lab.markgamache.com
-freestuff.lab.markgamache.com
-invest.lab.markgamache.com
-buy.lab.markgamache.com
-sell.lab.markgamache.com
-notgreat.lab.markgamache.com
-'@
 
-$dnsNamesLE = @'
-youwin.lab.markgamache.com
-main.lab.markgamache.com
-tents.lab.markgamache.com
-great.lab.markgamache.com
-surprise.lab.markgamache.com
-money.lab.markgamache.com
-api.lab.markgamache.com
-weak.lab.markgamache.com
-'@
-
-
-
-
-$names = @()
-
-$n1 = [string[]] ($dnsNamesPVT.Split("`n"))
-$names += $n1
-
-$n2 = [string[]] ($dnsNamesLE.Split("`n"))
-$names += $n2
+$names = (dir /etc/nginx/pki | where Name -like "*.*").name | ConvertTo-Json -Compress
 
 $bigSrting = ""
 
@@ -55,7 +27,8 @@ $bigSrting += $defSplat
 
 foreach($n in $names)
 {
-    $n = $n.Replace("`r","")
+    
+    mkdir "/var/www/$($n)"
 
 $httpSplat = @"
 
@@ -85,8 +58,8 @@ server {
     listen   443 ssl;
 
     
-    ssl_certificate_key       /etc/nginx/pki/$($n)/$($n).key;
-    ssl_certificate    /etc/nginx/pki/$($n)/fullchain.cer;
+    ssl_certificate_key       /etc/nginx/pki/$($n)/key.pem;
+    ssl_certificate    /etc/nginx/pki/$($n)/certwithchain.pem;
     ssl_session_tickets off;
     gzip off;
 
@@ -109,6 +82,10 @@ $bigSrting += $httpsSplat
 
 }
 
-Set-Clipboard -Value $bigSrting
+#copy the conf  $bigSrting to home
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.old
+$bigSrting | Out-File -Encoding ascii -FilePath /etc/nginx/sites-available/default
+
+& chmod -R 664 /var/www/*
 
 Write-Host "" -NoNewline

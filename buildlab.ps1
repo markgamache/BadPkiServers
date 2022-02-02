@@ -25,3 +25,8 @@ cd ./BadPkiServers/
 ./intCertRollOut.ps1
 
 
+./buildConf.ps1
+
+./setupFolders.ps1
+
+& systemctl reload nginx
