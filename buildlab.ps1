@@ -18,3 +18,4 @@
 
 & mkdir /etc/nginx/pki
 
+./intCertRollOut.ps1
