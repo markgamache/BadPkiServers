@@ -14,8 +14,12 @@
 & apt install nginx -y
 & apt-get install nginx-extras -y
 
+cd .. 
+
 & git clone https://github.com/markgamache/labPkiPy.git
 
 & mkdir /etc/nginx/pki
+
+cd ./BadPkiServers/ 
 
 ./intCertRollOut.ps1
