@@ -1,6 +1,7 @@
 ﻿#! /snap/bin/pwsh
 
 $names = (dir /etc/nginx/pki | where Name -like "*.*").name 
+#$names += "pki.badlab.markgamache.com"
 
 $bigSrting = ""
 
@@ -16,6 +17,28 @@ server {
         server_name _;
         location = / {  
             return 302 https://$server_name$request_uri;
+        }
+        
+}
+
+'@
+
+$bigSrting += $defSplat
+
+#CDP and AIA
+
+$defSplat = @'
+server {
+        listen 80;
+        
+        root /var/www/pki.badlab.markgamache.com;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name pki.badlab.markgamache.com;
+        location = / {  
+            autoindex on;
         }
         
 }
