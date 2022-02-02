@@ -23,3 +23,5 @@ cd ..
 cd ./BadPkiServers/ 
 
 ./intCertRollOut.ps1
+
+
