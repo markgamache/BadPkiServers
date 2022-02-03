@@ -157,7 +157,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # mobile.pkilab.markgamache.com we need to send with the old ICA Cert.
+        # mobile.pkilab.markgamache.com the issuer is NOT a CA per BC.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "mobile.pkilab.markgamache.com" --signer "Gamache Server ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
@@ -212,7 +212,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
             #$did | ConvertFrom-Json
 
              # banking.pkilab.markgamache.com the cert should have CN, but no san
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
             $did | ConvertFrom-Json
 
              # trading.pkilab.markgamache.com the cert should have CN, but no san
