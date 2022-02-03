@@ -128,7 +128,7 @@ $bigSrting += $httpsSplat
 }
 
 #copy the conf  $bigSrting to home
-cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.old
+Copy-Item /etc/nginx/sites-available/default /etc/nginx/sites-available/default.old
 $bigSrting | Out-File -Encoding ascii -FilePath /etc/nginx/sites-available/default
 
 & chmod -R 777 /var/www/*

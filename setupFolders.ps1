@@ -61,10 +61,10 @@ $instHTML = @"
 "@
 
 #http://pki.pkilab.markgamache.com/_LabRoot.crt
-$instHTML += "<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`">Lab Root Cert. Be careful. It is scary insecure</a><br>"
+$instHTML += "<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`" target=`"_blank`" rel=`"noopener noreferrer`">Lab Root Cert. Be careful. It is scary insecure</a><br>"
 foreach($n in $names)
 {
-    $instHTML += "<a href=`"http://$($n)`">$($n)</a>"
+    $instHTML += "<a href=`"http://$($n)`" target=`"_blank`" rel=`"noopener noreferrer`" >$($n)</a>"
     $instHTML += "<br>"
 
 }
