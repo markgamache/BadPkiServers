@@ -6,7 +6,7 @@ mkdir $baseP
 $artifacts = $baseP + "/artifacts/"
 mkdir $artifacts
 
-$baseHTTP = "http:/pki.pkilab.markgamache.com/"
+$baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
 # Gamache Trust Root 2018
