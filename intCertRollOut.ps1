@@ -83,7 +83,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
         $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
-
+        $longInt = "$($certBack.basePath)/cert.pem"
 
 
     # Gamache Some Assurance ICA 2018  old
@@ -127,7 +127,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
         #AIA
         "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
-        $longInt = "$($certBack.basePath)/cert.pem"
+        
 
         #crl
         "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
