@@ -127,6 +127,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
         #AIA
         "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii
         Copy-Item -Force  "$($certBack.basePath)/cert.pem" "$($artifacts)/$($certBack.serial).crt"
+        $longInt = "$($certBack.basePath)/cert.pem"
 
         #crl
         "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
@@ -186,6 +187,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
 
             #get rid of the old CA cert
             ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certold.rem"
+            $oldHACert = "$($certBack.basePath)/certold.rem"
             Start-Sleep -Seconds 2
 
 
@@ -271,6 +273,15 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
             {
                 gc $c >> "$($baseP)/mega.pkilab.markgamache.com/certwithchain.pem"
             }
+
+
+            #todo. issue a cert from here, so the AIA is right, but then cobble up a chian with the old/expired isseur in it.
+            #  chad.pkilab.markgamache.com the cert should have CN, but no san
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "chad.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+            gc "$($baseP)/chad.pkilab.markgamache.com/cert.pem" > "$($baseP)/chad.pkilab.markgamache.com/certwithchain.pem"
+            gc $oldHACert >> "$($baseP)/chad.pkilab.markgamache.com/certwithchain.pem"
+            gc $longInt >> "$($baseP)/chad.pkilab.markgamache.com/certwithchain.pem"
 
 
 #Gamache Client ICA
