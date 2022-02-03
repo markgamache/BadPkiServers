@@ -266,7 +266,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
             #make big chain
-            $labcerts = (dir ../BadPkiServers/labcerts).name 
+            $labcerts = (dir ../BadPkiServers/labcerts).FullName 
             foreach($c in $labcerts)
             {
                 gc $c >> "$($baseP)/mega.pkilab.markgamache.com/certwithchain.pem"
