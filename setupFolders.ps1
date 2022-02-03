@@ -60,6 +60,8 @@ $instHTML = @"
 <br>
 "@
 
+#http://pki.pkilab.markgamache.com/_LabRoot.crt
+$instHTML += "<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`">Lab Root Cert. Be careful. It is scary insecure</a><br>"
 foreach($n in $names)
 {
     $instHTML += "<a href=`"http://$($n)`">$($n)</a>"

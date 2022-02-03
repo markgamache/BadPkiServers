@@ -64,8 +64,6 @@ server {
         index index.html index.htm index.nginx-debian.html;
 
         server_name instructions.pkilab.markgamache.com;
-
-
         
 }
 
@@ -92,7 +90,6 @@ server {
             return 302 https://`$server_name`$request_uri;
        }
 
-       
 }
 
 "@

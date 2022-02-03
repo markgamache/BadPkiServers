@@ -186,7 +186,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
 
             #get rid of the old CA cert
             ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certold.rem"
-
+            Start-Sleep -Seconds 2
 
 
 
