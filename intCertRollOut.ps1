@@ -191,7 +191,7 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
 
 
     # Gamache Server HA ICA  new
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Server HA ICA" --signer "Gamache Int CA 2018" --validfrom dtMinusTwoYears --validto dtPlusFiveYears --keysize 2048 --pathlength 0 --ncallowed newpkilab.markgamache.com --ncdisallowed threat.pkilab.markgamache.com
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Server HA ICA" --signer "Gamache Int CA 2018" --validfrom dtMinusTwoYears --validto dtPlusFiveYears --keysize 2048 --pathlength 0 --ncallowed "newpkilab.markgamache.com,pkilab.markgamache.com" --ncdisallowed threat.pkilab.markgamache.com
         $certBack = $did | ConvertFrom-Json
 
         #AIA
