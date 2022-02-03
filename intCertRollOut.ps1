@@ -261,6 +261,18 @@ $baseHTTP = "http:/pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
 
+            #  mega.newpkilab.markgamache.com the cert should have CN, but no san
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "mega.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
+            #make big chain
+            $labcerts = (dir labcerts).name 
+            foreach($c in $labcerts)
+            {
+                gc $c >> "$($baseP)/mega.pkilab.markgamache.com/certwithchain.pem"
+            }
+
+
 #Gamache Client ICA
     $did = & python3 ./DoCAStuff.py --mode NewSubCaClientAuth --basepath $baseP --name "Gamache Client ICA" --signer "Gamache Int CA 2018" --validfrom dtMinusTenMin --validto dtPlusFiveYears --keysize 2048 --pathlength 0
     $certBack = $did | ConvertFrom-Json
