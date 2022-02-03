@@ -275,7 +275,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             }
 
 
-            #todo. issue a cert from here, so the AIA is right, but then cobble up a chian with the old/expired isseur in it.
+            # issue a cert from here, so the AIA is right, but then cobble up a chian with the old/expired isseur in it.
             #  chad.pkilab.markgamache.com the cert should have CN, but no san
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "chad.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
@@ -284,14 +284,14 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             gc $longInt >> "$($baseP)/chad.pkilab.markgamache.com/certwithchain.pem"
 
 
-            #todo. issue a cert from here, so the AIA is right, but then cobble up a chian with the old/expired isseur in it.
+            #chain wiht cert not first is a no good scenerio 
             #  racecar.pkilab.markgamache.com the cert should have CN, but no san
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "racecar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "racecar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
             #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" > "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-            gc $oldHACert > "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-            gc $longInt >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-            gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
+            #gc $oldHACert > "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
+            #gc $longInt >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
+            #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
 
 
 #Gamache Client ICA
