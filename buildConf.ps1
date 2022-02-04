@@ -230,11 +230,11 @@ server {
 
 "@
 
-    if($n -eq "")
+    if($n -eq "banking.pkilab.markgamache.com")
     {
         $bigSrting += $bankSSLSplat
     }
-    elseif($n -eq "")
+    elseif($n -eq "trading.pkilab.markgamache.com")
     {
         $bigSrting += $tradeSSLSplat
     }
