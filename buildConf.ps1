@@ -3,8 +3,8 @@
 $names = (dir /etc/nginx/pki | where Name -like "*.*").name 
 
 
-#$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`r`n"
-$bigSrting = ""
+$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`r`n"
+#$bigSrting = ""
 
 #http def
 $defSplat = @'
