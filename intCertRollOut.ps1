@@ -290,8 +290,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
             mkdir "/var/www/clientcerts.pkilab.markgamache.com"
-            Copy-Item "$($baseP)/clientcerts.pkilab.markgamache.com/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
-            Copy-Item "$($baseP)/clientcerts.pkilab.markgamache.com/key.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+            Copy-Item "$($baseP)/lassie/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+            Copy-Item "$($baseP)/lassie/key.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
 
             #chain wiht cert not first is a no good scenerio 
             #  racecar.pkilab.markgamache.com the cert should have CN, but no san
@@ -328,6 +328,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         # thesealion  client certr from client CA
         $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "thesealion" --signer "Gamache Client ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
         $did | ConvertFrom-Json
+
+        
+        Copy-Item "$($baseP)/thesealion/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+        Copy-Item "$($baseP)/thesealion/key.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
 
 #perms on the keys
 
