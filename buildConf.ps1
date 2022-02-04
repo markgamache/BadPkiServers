@@ -53,7 +53,6 @@ server {
 $bigSrting += $defSplat
 
 #instructions 
-
 $defSplat = @'
 server {
         listen 80;
@@ -71,6 +70,30 @@ server {
 
 $bigSrting += $defSplat
 
+
+#cps 
+$defSplat = @'
+server {
+        listen 80;
+        
+        root /var/www/cps.pkilab.markgamache.com;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name cps.pkilab.markgamache.com;
+        location = / {  
+            return 302 https://youtu.be/dQw4w9WgXcQ;
+       }
+}
+
+'@
+
+$bigSrting += $defSplat
+
+
+
+# the rest are generic
 foreach($n in $names)
 {
     

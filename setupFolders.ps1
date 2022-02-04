@@ -36,6 +36,8 @@ $html = @"
 }
 
 
+#cps folder probalby empty but needed for nginx to statrt
+mkdir "/var/www/cps.pkilab.markgamache.com"
 
 #instructions
 mkdir "/var/www/instructions.pkilab.markgamache.com"
