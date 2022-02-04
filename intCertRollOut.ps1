@@ -290,8 +290,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
             mkdir "/var/www/clientcerts.pkilab.markgamache.com"
-            Copy-Item "$($baseP)/lassie/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
-            Copy-Item "$($baseP)/lassie/key.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+            Copy-Item "$($baseP)/lassie/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com/lassie.pem" 
+            Copy-Item "$($baseP)/lassie/key.pem" "/var/www/clientcerts.pkilab.markgamache.com/lassie.key" 
 
             #chain wiht cert not first is a no good scenerio 
             #  racecar.pkilab.markgamache.com the cert should have CN, but no san
@@ -330,8 +330,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         $did | ConvertFrom-Json
 
         
-        Copy-Item "$($baseP)/thesealion/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
-        Copy-Item "$($baseP)/thesealion/key.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+        Copy-Item "$($baseP)/thesealion/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com/thesealion.pem" 
+        Copy-Item "$($baseP)/thesealion/key.pem" "/var/www/clientcerts.pkilab.markgamache.com/thesealion.key" 
 
 #perms on the keys
 

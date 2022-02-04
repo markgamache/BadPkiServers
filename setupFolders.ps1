@@ -62,7 +62,8 @@ $instHTML = @"
 <body>
 <h1>Welcome to the Lab</h1>
 <h2>These are the URLs of pain. Diagnose them please</h2>
-<br>
+<br><br>
+"<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`" target=`"_blank`" rel=`"noopener noreferrer`">Lab Root Cert. Be careful. It is scary insecure</a><br><br>
 <a href=`"http://clientcerts.pkilab.markgamache.com`" target=`"_blank`" rel=`"noopener noreferrer`" >Client Certs and Keys can be found here</a>
 <br><br>
 "@
@@ -72,7 +73,7 @@ $instHTML += "<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`" target=
 foreach($n in $names)
 {
     $instHTML += "<a href=`"http://$($n)`" target=`"_blank`" rel=`"noopener noreferrer`" >$($n)</a>"
-    $instHTML += "<br><br>"
+    $instHTML += "<br>"
 
 }
 
