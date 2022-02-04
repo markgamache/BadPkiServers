@@ -31,14 +31,14 @@ $bigSrting += $defSplat
 #alt ports
 $defSplat = @'
 server {
-        listen 8080 default_server;
+        listen 8080;
         
         root /var/www/html;
 
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;
 
-        server_name _;
+        server_name def.pkilab.markgamache.com;
         location = / {  
             return 302 https://$server_name$request_uri:8443;
         }
@@ -53,8 +53,8 @@ $bigSrting += $defSplat
 #https def
 $defSplat = @'
 server {
-        listen 8443 ssl default_server;
-        server_name _;
+        listen 8443 ssl;
+        server_name def.pkilab.markgamache.com;
         root /var/www/def.pkilab.markgamache.com;
 
         # Add index.php to the list if you are using PHP
