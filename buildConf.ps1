@@ -3,8 +3,8 @@
 $names = (dir /etc/nginx/pki | where Name -like "*.*").name 
 
 
-$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`n"
-#$bigSrting = ""
+#$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`n"
+$bigSrting = ""
 
 #http def
 $defSplat = @'
@@ -38,7 +38,7 @@ server {
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;
 
-        server_name def.pkilab.markgamache.com;
+        server_name _;
         location = / {  
             return 302 https://$server_name$request_uri:8443;
         }
@@ -48,36 +48,6 @@ server {
 '@
 
 $bigSrting += $defSplat
-
-#may break it all, but trying for client auth. client auth and SNI play poorly
-#https def
-$defSplat = @'
-server {
-        listen 8443 ssl;
-        server_name def.pkilab.markgamache.com;
-        root /var/www/def.pkilab.markgamache.com;
-
-        # Add index.php to the list if you are using PHP
-        index index.html index.htm index.nginx-debian.html;
-
-        ssl_certificate_key       /etc/nginx/pki/def.pkilab.markgamache.com/key.pem;
-        ssl_certificate    /etc/nginx/pki/def.pkilab.markgamache.com/certwithchain.pem;
-        ssl_session_tickets off;
-        gzip off;
-        ssl_protocols TLSv1.2 TLSv1.3;
-        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-        ssl_prefer_server_ciphers off;
-        ssl_verify_client       on;
-        ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
-        #ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
-        ssl_verify_depth 0;
-        
-}
-
-'@
-
-$bigSrting += $defSplat
-
 
 
 #holds client certs
