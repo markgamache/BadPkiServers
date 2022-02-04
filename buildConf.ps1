@@ -4,7 +4,8 @@ $names = (dir /etc/nginx/pki | where Name -like "*.*").name
 
 
 #$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`n"
-$bigSrting = ""
+$bigSrting = "add_header Cache-Control `"no-cache`";"
+$bigSrting += " "
 
 #http def
 $defSplat = @'
