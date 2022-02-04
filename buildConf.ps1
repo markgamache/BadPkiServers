@@ -3,7 +3,7 @@
 $names = (dir /etc/nginx/pki | where Name -like "*.*").name 
 
 
-$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`r`n"
+$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`n"
 #$bigSrting = ""
 
 #http def
@@ -27,6 +27,27 @@ server {
 
 $bigSrting += $defSplat
 
+
+#alt ports
+$defSplat = @'
+server {
+        listen 8080 default_server;
+        
+        root /var/www/html;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+        location = / {  
+            return 302 https://$server_name$request_uri:8443;
+        }
+        
+}
+
+'@
+
+$bigSrting += $defSplat
 
 #may break it all, but trying for client auth. client auth and SNI play poorly
 #https def
