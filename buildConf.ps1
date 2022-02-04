@@ -169,6 +169,7 @@ server {
 
 }
 
+"@
 
 $tradeSSLSplat = @"
 
@@ -195,6 +196,8 @@ server {
 
 
 }
+
+"@
 
 
 $bankSSLSplat = @"
