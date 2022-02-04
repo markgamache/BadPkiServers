@@ -27,7 +27,7 @@ server {
 
 $bigSrting += $defSplat
 
-
+<#
 #alt ports
 $defSplat = @'
 server {
@@ -48,7 +48,7 @@ server {
 '@
 
 $bigSrting += $defSplat
-
+#>
 
 #holds client certs
 $defSplat = @'
@@ -270,11 +270,11 @@ server {
 
     if($n -eq "banking.pkilab.markgamache.com")
     {
-        $bigSrting += $bankSSLSplat
+        #$bigSrting += $bankSSLSplat
     }
     elseif($n -eq "trading.pkilab.markgamache.com")
     {
-        $bigSrting += $tradeSSLSplat
+        #$bigSrting += $tradeSSLSplat
     }
     else
     {
