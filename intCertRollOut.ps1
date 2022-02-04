@@ -263,7 +263,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
 
-            #  mega.pkilab.markgamache.com the cert should have CN, but no san
+            #  mega.pkilab.markgamache.com the HUGE cain
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "mega.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
@@ -301,6 +301,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #gc $oldHACert > "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
             #gc $longInt >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
             #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
+
+             #  def.pkilab.markgamache.com 
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "def.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
 
 
 #Gamache Client ICA
