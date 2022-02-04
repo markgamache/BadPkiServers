@@ -272,6 +272,7 @@ server {
     if($n -eq "banking.pkilab.markgamache.com")
     {
         #$bigSrting += $bankSSLSplat
+        $bigSrting += $httpsSplat
     }
     elseif($n -eq "trading.pkilab.markgamache.com")
     {

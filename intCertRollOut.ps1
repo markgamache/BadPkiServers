@@ -218,8 +218,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
              # trading.pkilab.markgamache.com the cert should perfect but req mTLS  has no client hints
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
 
              # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "burrito.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --hash SHA1
@@ -302,10 +302,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #gc $longInt >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
             #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
 
-             #  def.pkilab.markgamache.com 
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "def.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
-
+           
 
 #Gamache Client ICA
     $did = & python3 ./DoCAStuff.py --mode NewSubCaClientAuth --basepath $baseP --name "Gamache Client ICA" --signer "Gamache Int CA 2018" --validfrom dtMinusTenMin --validto dtPlusFiveYears --keysize 2048 --pathlength 0
