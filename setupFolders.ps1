@@ -39,6 +39,9 @@ $html = @"
 #cps folder probalby empty but needed for nginx to statrt
 mkdir "/var/www/cps.pkilab.markgamache.com"
 
+#folder for client certs and keys will allow dir listing
+mkdir "/var/www/clientcerts.pkilab.markgamache.com"
+
 #instructions
 mkdir "/var/www/instructions.pkilab.markgamache.com"
 
@@ -58,16 +61,18 @@ $instHTML = @"
 </head>
 <body>
 <h1>Welcome to the Lab</h1>
-<h1>These are the URLs of pain. Diagnose them please</h1>
+<h2>These are the URLs of pain. Diagnose them please</h2>
 <br>
+<a href=`"http://clientcerts.pkilab.markgamache.com`" target=`"_blank`" rel=`"noopener noreferrer`" >Client Certs and Keys can be found here</a>
+<br><br>
 "@
 
 #http://pki.pkilab.markgamache.com/_LabRoot.crt
-$instHTML += "<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`" target=`"_blank`" rel=`"noopener noreferrer`">Lab Root Cert. Be careful. It is scary insecure</a><br>"
+$instHTML += "<a href=`"http://pki.pkilab.markgamache.com/_LabRoot.crt`" target=`"_blank`" rel=`"noopener noreferrer`">Lab Root Cert. Be careful. It is scary insecure</a><br><br>"
 foreach($n in $names)
 {
     $instHTML += "<a href=`"http://$($n)`" target=`"_blank`" rel=`"noopener noreferrer`" >$($n)</a>"
-    $instHTML += "<br>"
+    $instHTML += "<br><br>"
 
 }
 

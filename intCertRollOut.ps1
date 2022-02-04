@@ -213,11 +213,11 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
             #$did | ConvertFrom-Json
 
-             # banking.pkilab.markgamache.com the cert should have CN, but no san
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
+             # banking.pkilab.markgamache.com the cert should perfect but req mTLS has client hints
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # trading.pkilab.markgamache.com the cert should have CN, but no san
+             # trading.pkilab.markgamache.com the cert should perfect but req mTLS  has no client hints
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
@@ -284,6 +284,15 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             gc $longInt >> "$($baseP)/chad.pkilab.markgamache.com/certwithchain.pem"
 
 
+            #lassie
+            # lassie  client certr from CA that is not in list for banking or trading
+            $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "lassie" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --nosans
+            $did | ConvertFrom-Json
+
+            mkdir "/var/www/clientcerts.pkilab.markgamache.com"
+            Copy-Item "$($baseP)/clientcerts.pkilab.markgamache.com/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+            Copy-Item "$($baseP)/clientcerts.pkilab.markgamache.com/key.pem" "/var/www/clientcerts.pkilab.markgamache.com" 
+
             #chain wiht cert not first is a no good scenerio 
             #  racecar.pkilab.markgamache.com the cert should have CN, but no san
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "racecar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
@@ -311,7 +320,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
     # 
-        # arsassin.pkilab.markgamache.com  server certr from client CA
+        # arsassin.pkilab.markgamache.com  server certr from client CA should fail
         $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "arsassin.pkilab.markgamache.com" --signer "Gamache Client ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
         $did | ConvertFrom-Json
 

@@ -25,6 +25,31 @@ server {
 
 $bigSrting += $defSplat
 
+#holds client certs
+$defSplat = @'
+server {
+        listen 80;
+        
+        root /var/www/clientcerts.pkilab.markgamache.com;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name clientcerts.pkilab.markgamache.com;
+
+        location = / {  
+            autoindex on;
+            
+        }
+        
+}
+
+'@
+
+$bigSrting += $defSplat
+
+
+
 #CDP and AIA
 
 $defSplat = @'
