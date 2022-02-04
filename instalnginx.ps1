@@ -145,4 +145,4 @@ Remove-Item -Recurse -Force ./openssl-1.1.1j
 Install-NginxByName -name nginx1
 Install-NginxByName -name nginx2
 
-& chown -R QQmarkgamache /home/QQmarkgamache
+#& chown -R QQmarkgamache /home/QQmarkgamache

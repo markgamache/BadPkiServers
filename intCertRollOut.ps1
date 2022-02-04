@@ -1,6 +1,7 @@
 ﻿#! /snap/bin/pwsh
 cd /home/ubuntu/labPkiPy
 
+mkdir "/etc/nginx"
 $baseP = "/etc/nginx/pki"
 mkdir $baseP
 $artifacts = $baseP + "/artifacts/"
