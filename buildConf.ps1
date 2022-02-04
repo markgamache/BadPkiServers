@@ -32,8 +32,8 @@ $bigSrting += $defSplat
 #https def
 $defSplat = @'
 server {
-        listen 443 ssl default_server;
-        
+        listen 8443 ssl default_server;
+        server_name _;
         root /var/www/def.pkilab.markgamache.com;
 
         # Add index.php to the list if you are using PHP
@@ -48,7 +48,7 @@ server {
         ssl_prefer_server_ciphers off;
         ssl_verify_client       on;
         ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
-        ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
+        #ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
         ssl_verify_depth 0;
         
 }
