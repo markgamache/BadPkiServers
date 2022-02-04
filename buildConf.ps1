@@ -221,6 +221,7 @@ server {
     ssl_prefer_server_ciphers off;
     ssl_verify_client       on;
     ssl_client_certificate /etc/nginx/pki/Gamache Client ICA/cert.pem;
+    ssl_trusted_certificate /etc/nginx/pki/Gamache Client ICA/cert.pem;
 
     add_header Strict-Transport-Security "max-age=45" always;
 
