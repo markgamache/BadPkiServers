@@ -38,8 +38,8 @@ function Install-NginxByName([string]$name)
 
     
     & cd nginx-1.18.0
-    Read-Host -Prompt "look pwd" 
-    & cp ~/nginx-1.18.0/man/nginx.8 /usr/share/man/man8
+    #Read-Host -Prompt "look pwd" 
+    & cp /man/nginx.8 /usr/share/man/man8
     & gzip -f /usr/share/man/man8/nginx.8
     
 
