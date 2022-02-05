@@ -38,6 +38,7 @@ function Install-NginxByName([string]$name)
 
     
     & cd nginx-1.18.0
+    Read-Host -Prompt "look pwd" 
     & cp ~/nginx-1.18.0/man/nginx.8 /usr/share/man/man8
     & gzip -f /usr/share/man/man8/nginx.8
     
@@ -138,10 +139,10 @@ WantedBy=multi-user.target
 
 
 
-Remove-Item -Recurse -Force ./nginx-1.18.0
-Remove-Item -Recurse -Force ./pcre-8.44
-Remove-Item -Recurse -Force ./zlib-1.2.11
-Remove-Item -Recurse -Force ./openssl-1.1.1j
+#Remove-Item -Recurse -Force ./nginx-1.18.0
+#Remove-Item -Recurse -Force ./pcre-8.44
+#Remove-Item -Recurse -Force ./zlib-1.2.11
+#Remove-Item -Recurse -Force ./openssl-1.1.1j
 Install-NginxByName -name nginx1
 Install-NginxByName -name nginx2
 
