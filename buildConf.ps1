@@ -28,28 +28,6 @@ server {
 
 $bigSrting += $defSplat
 
-<#
-#alt ports
-$defSplat = @'
-server {
-        listen 8080;
-        
-        root /var/www/html;
-
-        # Add index.php to the list if you are using PHP
-        index index.html index.htm index.nginx-debian.html;
-
-        server_name _;
-        location = / {  
-            return 302 https://$server_name$request_uri:8443;
-        }
-        
-}
-
-'@
-
-$bigSrting += $defSplat
-#>
 
 #holds client certs
 $defSplat = @'
@@ -214,20 +192,16 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
-    ssl_verify_client       on;
-    ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
-    ssl_verify_depth 0;
-
-    
+        
     root /var/www/trading.pkilab.markgamache.com;
     index index.html index.htm index.nginx-debian.html;
-
-    
-
+        
     add_header Strict-Transport-Security "max-age=45" always;
-    if ($ssl_client_verify != SUCCESS) {
-       return 403;
+
+    location = / {  
+            return 302 https://yang.pkilab.markgamache.com;
     }
+    
 
 
 }
@@ -269,14 +243,14 @@ server {
 
 "@
 
-    if($n -eq "banking.pkilab.markgamache.com")
+    if($n -eq "banking.mtlspkilab.markgamache.com")
     {
         #$bigSrting += $bankSSLSplat
-        $bigSrting += $httpsSplat
+        #$bigSrting += $httpsSplat
     }
     elseif($n -eq "trading.pkilab.markgamache.com")
     {
-        #$bigSrting += $tradeSSLSplat
+        $bigSrting += $tradeSSLSplat
     }
     else
     {
