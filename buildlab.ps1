@@ -1,4 +1,13 @@
 #! /snap/bin/pwsh
+[CmdletBinding()]
+Param
+(
+    [ValidateSet("main", "mtls")]
+    [string]$BuildType = "main"
+
+
+)
+
 & apt-get upgrade -y
 & apt update -y
 & apt autoremove -y
@@ -9,6 +18,8 @@
 & apt install python3-pip -y
 & pip install mock
 & pip install cryptography --upgrade
+
+& sudo apt  install awscli -y
 
 & apt install awscli -y
 & apt install nginx -y
@@ -22,22 +33,31 @@ cd ..
 
 cd ./BadPkiServers/ 
 
-./intCertRollOut.ps1
+if($BuildType -eq "main")
+{
 
-cd ..
-cd ./BadPkiServers/ 
-./buildConf.ps1
+    ./intCertRollOut.ps1
 
-./setupFolders.ps1
+    cd ..
+    cd ./BadPkiServers/ 
+    ./buildConf.ps1
 
-$baseP = "/etc/nginx/pki"
-$artifacts = $baseP + "/artifacts/"
+    ./setupFolders.ps1
 
-mkdir /var/www/pki.pkilab.markgamache.com
-Copy-Item /etc/nginx/pki/artifacts/*.* /var/www/pki.pkilab.markgamache.com/
+    $baseP = "/etc/nginx/pki"
+    $artifacts = $baseP + "/artifacts/"
+
+    mkdir /var/www/pki.pkilab.markgamache.com
+    Copy-Item /etc/nginx/pki/artifacts/*.* /var/www/pki.pkilab.markgamache.com/
 
 
-& systemctl reload nginx
+    & systemctl reload nginx
 
-Start-Sleep -Seconds 2
-& systemctl start nginx
+    Start-Sleep -Seconds 2
+    & systemctl start nginx
+
+}
+else
+{
+    & aws s3 sync  s3://certsync/pki /etc/nginx/pki/
+}

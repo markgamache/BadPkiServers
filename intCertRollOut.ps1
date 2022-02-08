@@ -255,11 +255,11 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "notgreat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --isca True
             #$did | ConvertFrom-Json
 
-             #  threat.pkilab.markgamache.com the cert should have CN, but no san
+             #  threat.pkilab.markgamache.com cert is good, but name disallowed by issuer 
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "threat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             #  best.newpkilab.markgamache.com the cert should have CN, but no san
+             #  best.newpkilab.markgamache.com  name allowed by ICA, but banned at root.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "best.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
@@ -339,4 +339,5 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 & chmod -R 777 /etc/nginx/pki/*
 
+& aws s3 sync /etc/nginx/pki/ s3://certsync/pki
 

@@ -252,6 +252,10 @@ server {
     {
         $bigSrting += $tradeSSLSplat
     }
+    elseif($n -eq "banking.mtlspkilab.markgamache.com")
+    {
+
+    }
     else
     {
         $bigSrting += $httpsSplat
