@@ -2,6 +2,8 @@
 
 $names = (dir /etc/nginx/pki | where Name -like "*.*").name 
 
+cat "/etc/nginx/pki/Gamache Trust Root 2018/cert.pem" > /etc/nginx/pki/clientVer.pem
+cat '/etc/nginx/pki/Gamache Int CA 1/cert.pem' >> /etc/nginx/pki/clientVer.pem
 
 #$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`n"
 $bigSrting = "add_header Cache-Control `"no-cache`";"
@@ -224,8 +226,8 @@ server {
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
     ssl_verify_client       on;
-    #ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
-    ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
+    ssl_client_certificate /etc/nginx/pki/clientVer.pem;
+    #ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
     ssl_verify_depth 0;
     
     root /var/www/banking.pkilab.markgamache.com;
@@ -247,6 +249,10 @@ server {
     {
         #$bigSrting += $bankSSLSplat
         #$bigSrting += $httpsSplat
+    }
+    elseif($n -eq "banking.pkilab.markgamache.com")
+    {
+        $bigSrting += $bankSSLSplat
     }
     elseif($n -eq "trading.pkilab.markgamache.com")
     {
