@@ -31,7 +31,7 @@ $html = @"
 "@ 
 #Write-Host $html
 
-    $html |  Out-File -FilePath "/var/www/$($n)/index.html"  -Force
+    $html |  Out-File -FilePath "/var/www/$($n)/index.html"  -Force -Encoding ascii
 
 }
 
