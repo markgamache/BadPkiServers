@@ -218,6 +218,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.mtlspkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
+            # banking.pkilab.markgamache.com testing testing
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
              # trading.pkilab.markgamache.com this site has not issues. It redirects to a failed site to show redircert confusion for users.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json

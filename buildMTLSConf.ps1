@@ -3,7 +3,9 @@
 
 #$bigSrting = "ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;`n"
 $bigSrting = "add_header Cache-Control `"no-cache`";"
-$bigSrting += " "
+$bigSrting += @" 
+
+"@
 
 #http def
 $defSplat = @'
