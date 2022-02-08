@@ -13,7 +13,7 @@ server {
         ssl_certificate_key /etc/nginx/pki/banking.mtlspkilab.markgamache.com/key.pem;
         ssl_verify_client on;
         ssl_verify_depth 3;
-        ssl_client_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
+        ssl_client_certificate "/etc/nginx/pki/Gamache Trust Root 2018/cert.pem";
         
         root /var/www/html;
 
