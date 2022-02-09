@@ -1,5 +1,5 @@
 #! /snap/bin/pwsh
-[CmdletBinding()]
+
 Param
 (
     [ValidateSet("main", "mtls")]
@@ -58,6 +58,8 @@ else
 {
     & aws s3 sync  s3://certsync/pki /etc/nginx/pki/
     & chmod -R 777 /etc/nginx/pki/*
+    ./buildMTLSConf.ps1
+
 }
 
 
