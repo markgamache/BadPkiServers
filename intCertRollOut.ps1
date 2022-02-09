@@ -214,9 +214,9 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
             #$did | ConvertFrom-Json
 
-             # banking.mtlspkilab.markgamache.com the cert should perfect but req mTLS has client hints
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.mtlspkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+             # banking.mtlspkilab.markgamache.com the cert should perfect but req mTLS has client hints  NO NEED, solved client auth issue
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.mtlspkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
 
             # banking.pkilab.markgamache.com testing testing
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
@@ -343,5 +343,5 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 & chmod -R 777 /etc/nginx/pki/*
 
-& aws s3 sync /etc/nginx/pki/ s3://certsync/pki
+#& aws s3 sync /etc/nginx/pki/ s3://certsync/pki
 

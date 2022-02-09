@@ -1,6 +1,8 @@
 ﻿#! /snap/bin/pwsh
 
-$names = (dir /etc/nginx/pki | where Name -like "*.*").name 
+$names = (dir -Directory /etc/nginx/pki | where Name -like "*.*").name 
+
+
 
 cat "/etc/nginx/pki/Gamache Trust Root 2018/cert.pem" > /etc/nginx/pki/clientVer.pem
 cat '/etc/nginx/pki/Gamache Int CA 1/cert.pem' >> /etc/nginx/pki/clientVer.pem
@@ -231,7 +233,7 @@ server {
     ssl_verify_client       on;
     ssl_client_certificate /etc/nginx/pki/clientVer.pem;
     #ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
-    ssl_verify_depth 0;
+    ssl_verify_depth 3;
     
     root /var/www/banking.pkilab.markgamache.com;
     index index.html index.htm index.nginx-debian.html;
