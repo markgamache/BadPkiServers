@@ -147,7 +147,7 @@ server {
        index index.html index.htm index.nginx-debian.html;
 
        location = / {  
-            return 302 https://$server_name$request_uri;
+            return 302 https://`$server_name`$request_uri;
        }
 
 }
@@ -239,9 +239,9 @@ server {
     
 
     add_header Strict-Transport-Security "max-age=45" always;
-    #if ($ssl_client_verify != SUCCESS) {
-    #   return 403;
-    #}
+    if (`$ssl_client_verify != SUCCESS) {
+       return 403;
+    }
 
 }
     
