@@ -1,5 +1,5 @@
 ﻿#! /snap/bin/pwsh
-$names = (dir /etc/nginx/pki | where Name -like "*.*").name 
+$names = (dir -Directory /etc/nginx/pki | where Name -like "*.*").name 
 
 
 foreach($n in $names)
