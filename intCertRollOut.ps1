@@ -226,8 +226,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "cranking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # trading.pkilab.markgamache.com this site has not issues. It redirects to a failed site to show redircert confusion for users.
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+             # RadioStar.pkilab.markgamache.com this site has not issues. It redirects to a failed site to show redircert confusion for users.
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "RadioStar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
              # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
@@ -238,13 +238,13 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "marrion.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --noekus
             $did | ConvertFrom-Json
 
-            # buy.pkilab.markgamache.com the intent is to send the issuer, but not the int CA 
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "buy.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            # magichead.pkilab.markgamache.com the intent is to send the issuer, but not the int CA 
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "magichead.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
             #make the short chain 
-            Remove-Item "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
-            cp "$($baseP)/buy.pkilab.markgamache.com/cert.pem"  "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem"
-            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem" | Out-File -Encoding ascii -FilePath "$($baseP)/buy.pkilab.markgamache.com/certwithchain.pem" -Append
+            Remove-Item "$($baseP)/magichead.pkilab.markgamache.com/certwithchain.pem"
+            cp "$($baseP)/magichead.pkilab.markgamache.com/cert.pem"  "$($baseP)/magichead.pkilab.markgamache.com/certwithchain.pem"
+            Get-Content "$($baseP)/Gamache Server HA ICA/cert.pem" | Out-File -Encoding ascii -FilePath "$($baseP)/magichead.pkilab.markgamache.com/certwithchain.pem" -Append
 
 
             # soclose.pkilab.markgamache.com the intent is to send the cert with no chain
@@ -271,8 +271,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "reference.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             #  best.newpkilab.markgamache.com  name allowed by ICA, but banned at root.
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "best.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+             #  OvaltineJenkins.newpkilab.markgamache.com  name allowed by ICA, but banned at root.
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "OvaltineJenkins.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
 
