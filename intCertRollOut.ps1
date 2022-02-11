@@ -70,7 +70,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
     # Gamache Int CA 1776 
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1 -hash MD5
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1 --hash MD5
         $certBack = $did | ConvertFrom-Json
         $intCA = $certBack
 
