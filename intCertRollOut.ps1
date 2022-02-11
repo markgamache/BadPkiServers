@@ -162,9 +162,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
         # Hollabackatcha.pkilab.markgamache.com we this one should be good cert but chain using old ICA.  Todo. this one is sending the old chain. fix build chain
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Hollabackatcha.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
-            $did | ConvertFrom-Json
-            $did
-            $certBack = $did
+            $certBack = $did | ConvertFrom-Json
+            $certBack 
             ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" -Force
             cat $oldSAICACert >> "$($certBack.basePath)/certwithchain.pem" 
             cat $longInt >> "$($certBack.basePath)/certwithchain.pem" 
