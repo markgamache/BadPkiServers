@@ -70,7 +70,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
     # Gamache Int CA 1776 
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1 --hash MD5
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom dtMinusTenMin --validto janOf2028 --keysize 2048 --pathlength 1 --hash SHA1
         $certBack = $did | ConvertFrom-Json
         $intCA = $certBack
 
@@ -86,7 +86,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
         
 
-        # whittlebury.pkilab.markgamache.com .  issuer has MD5
+        # whittlebury.pkilab.markgamache.com .  issuer has SHA1
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "whittlebury.pkilab.markgamache.com" --signer "Gamache Int CA 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
@@ -164,6 +164,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Hollabackatcha.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $certBack = $did | ConvertFrom-Json
             $certBack 
+            Remove-Item "$($certBack.basePath)/certwithchain.pem"
             ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" -Force
             cat $oldSAICACert >> "$($certBack.basePath)/certwithchain.pem" 
             cat $longInt >> "$($certBack.basePath)/certwithchain.pem" 
