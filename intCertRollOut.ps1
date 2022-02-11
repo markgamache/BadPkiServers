@@ -69,6 +69,28 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
 
+    # Gamache Int CA 1776 
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1 -hash MD5
+        $certBack = $did | ConvertFrom-Json
+        $intCA = $certBack
+
+        #AIA
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii -NoNewline
+        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
+
+        #crl  
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii -NoNewline
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear 
+        $crlBack = $did | ConvertFrom-Json
+        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
+        
+
+        # whittlebury.pkilab.markgamache.com .  issuer has MD5
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "whittlebury.pkilab.markgamache.com" --signer "Gamache Int CA 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            $did | ConvertFrom-Json
+
+
     # Gamache Int CA 2018 
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 2018" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1
         $certBack = $did | ConvertFrom-Json
@@ -219,17 +241,14 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
             #$did | ConvertFrom-Json
 
-             # banking.mtlspkilab.markgamache.com the cert should perfect but req mTLS has client hints  NO NEED, solved client auth issue
-            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.mtlspkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            #$did | ConvertFrom-Json
 
             # banking.pkilab.markgamache.com mTLS with showing CAs
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-            # cranking.pkilab.markgamache.com mTLS without showing CAs  the show not show CAs is per nginx and not virutal servdr
-            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "cranking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            #$did | ConvertFrom-Json
+            # gustice.pkilab.markgamache.com mTLS for demo, so banking is a suprise
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "gustice.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
 
              # RadioStar.pkilab.markgamache.com this site has not issues. It redirects to a failed site to show redircert confusion for users.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "RadioStar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
