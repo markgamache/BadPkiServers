@@ -63,8 +63,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # walter.pkilab.markgamache.com .  Path len on int should break
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "walter.pkilab.markgamache.com" --signer "Gamache Super ICA 1" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+        # tapman.pkilab.markgamache.com .  Path len on int should break
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "tapman.pkilab.markgamache.com" --signer "Gamache Super ICA 1" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
 
@@ -112,13 +112,13 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
 
-        # website.pkilab.markgamache.com we need to send with the old ICA Cert.
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "website.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            # Suggs.pkilab.markgamache.com we need to send with the old ICA Cert.
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Suggs.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
-            #get rid of the old CA cert
-            ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certold.rem"
-
+        #get rid of the old CA cert
+        ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certold.rem"
+        $oldSAICACert = "$($certBack.basePath)/certold.rem"
 
 
     # Gamache Some Assurance ICA 2018  new
@@ -138,9 +138,14 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # scotus.pkilab.markgamache.com we this one should be good.  Todo. this one is sending the old chain. fix build chain
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "scotus.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+        # Hollabackatcha.pkilab.markgamache.com we this one should be good cert but chain using old ICA.  Todo. this one is sending the old chain. fix build chain
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Hollabackatcha.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
+            $did
+            $certBack = $did
+            ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" -Force
+            cat $oldSAICACert >> "$($certBack.basePath)/certwithchain.pem" 
+            cat $longInt >> "$($certBack.basePath)/certwithchain.pem" 
     
 
     # Gamache Server ICA  this one CA = false
@@ -159,8 +164,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # mobile.pkilab.markgamache.com the issuer is NOT a CA per BC.
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "mobile.pkilab.markgamache.com" --signer "Gamache Server ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+        # Francois.pkilab.markgamache.com the issuer is NOT a CA per BC.
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Francois.pkilab.markgamache.com" --signer "Gamache Server ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
 
@@ -222,9 +227,9 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-            # cranking.pkilab.markgamache.com mTLS without showing CAs
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "cranking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+            # cranking.pkilab.markgamache.com mTLS without showing CAs  the show not show CAs is per nginx and not virutal servdr
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "cranking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
 
              # RadioStar.pkilab.markgamache.com this site has not issues. It redirects to a failed site to show redircert confusion for users.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "RadioStar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
