@@ -106,7 +106,12 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
             # whittlebury.pkilab.markgamache.com .  works create just another demo
                 $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "whittlebury.pkilab.markgamache.com" --signer "Gamache Issuer 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
-                $did | ConvertFrom-Json
+                #$did | ConvertFrom-Json
+                #send with no chain
+                $certBack = $did | ConvertFrom-Json
+                $certBack 
+                Remove-Item "$($certBack.basePath)/certwithchain.pem"
+                cp "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" 
 
 
     # Gamache Int CA 2018 
@@ -183,7 +188,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $certBack = $did | ConvertFrom-Json
             $certBack 
             Remove-Item "$($certBack.basePath)/certwithchain.pem"
-            ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" -Force
+            cp "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" 
             cat $oldSAICACert >> "$($certBack.basePath)/certwithchain.pem" 
             cat $longInt >> "$($certBack.basePath)/certwithchain.pem" 
     
