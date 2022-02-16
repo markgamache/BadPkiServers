@@ -10,6 +10,11 @@ mkdir $artifacts
 $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
+#consider for future.  Crereate root and ICA that are not part of the Gamache Trust Root 2018 hierarcy. Issue a cert from it.  X-sign that cert with Gamache Trust Root 2018 and update the chain to send the x-sign cert
+    # update py code to support KU and then have some fun there.
+    # don't set BCs at all
+
+
 # Gamache Trust Root 2018
     $did = & python3 ./DoCAStuff.py --mode NewRootCA --basepath $baseP --name "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2048 --keysize 4096 --pathlength 2 --ncallowed "pkilab.markgamache.com,mtlspkilab.markgamache.com"
     $certBack = $did | ConvertFrom-Json
@@ -104,7 +109,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
 
-            # whittlebury.pkilab.markgamache.com .  works create just another demo
+            # whittlebury.pkilab.markgamache.com .  works great just another demo
                 $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "whittlebury.pkilab.markgamache.com" --signer "Gamache Issuer 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
                 #$did | ConvertFrom-Json
                 #send with no chain
@@ -158,7 +163,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
             # Suggs.pkilab.markgamache.com we need to send with the old ICA Cert.
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Suggs.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "suggs.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
         #get rid of the old CA cert
@@ -183,8 +188,8 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
 
-        # Hollabackatcha.pkilab.markgamache.com we this one should be good cert but chain using old ICA.  Todo. this one is sending the old chain. fix build chain
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Hollabackatcha.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+        # Hollabackatcha.pkilab.markgamache.com we this one should be good cert but chain using old ICA.  
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "hollabackatcha.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $certBack = $did | ConvertFrom-Json
             $certBack 
             Remove-Item "$($certBack.basePath)/certwithchain.pem"
@@ -210,7 +215,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
         # Francois.pkilab.markgamache.com the issuer is NOT a CA per BC.
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Francois.pkilab.markgamache.com" --signer "Gamache Server ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "francois.pkilab.markgamache.com" --signer "Gamache Server ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $did | ConvertFrom-Json
 
 
@@ -239,7 +244,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #get rid of the old CA cert
             ren "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certold.rem"
             $oldHACert = "$($certBack.basePath)/certold.rem"
-            Start-Sleep -Seconds 2
+            #Start-Sleep -Seconds 2
 
 
 
