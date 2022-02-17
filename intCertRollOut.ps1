@@ -13,6 +13,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 #consider for future.  Crereate root and ICA that are not part of the Gamache Trust Root 2018 hierarcy. Issue a cert from it.  X-sign that cert with Gamache Trust Root 2018 and update the chain to send the x-sign cert
     # update py code to support KU and then have some fun there.
     # don't set BCs at all
+    # ski and aki https://cryptography.io/en/latest/x509/reference/#cryptography.x509.AuthorityKeyIdentifier.from_issuer_public_key
 
 
 # Gamache Trust Root 2018
@@ -317,6 +318,11 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
              #  threat.pkilab.markgamache.com cert is good, but name disallowed by issuer 
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "threat.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
+
+             #  TheBlackGoose.pkilab.markgamache.com cert is good, but name disallowed by issuer 
+            $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "TheBlackGoose.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
              #  reference.pkilab.markgamache.com cert is good for reference
