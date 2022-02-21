@@ -189,11 +189,11 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         #crl
         "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
         "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii -NoNewline
-        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Some Assurance ICA 2019" --validfrom janOf2018 --validto dtMinusTenMin 
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Some Assurance ICA 2019" --validfrom dtMinusTenMin --validto dtPlusTenMin 
         $crlBack = $did | ConvertFrom-Json
         Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
-        #crl not copied so that some clients will fail
+        #crl expired by the lab time
             # Nick-Nack.pkilab.markgamache.com we this one should be good cert but chain using old ICA.  
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Nick-Nack.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
             $certBack = $did | ConvertFrom-Json
