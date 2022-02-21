@@ -14,6 +14,9 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
     # update py code to support KU and then have some fun there.
     # don't set BCs at all
     # ski and aki https://cryptography.io/en/latest/x509/reference/#cryptography.x509.AuthorityKeyIdentifier.from_issuer_public_key
+    # add a CA and cert whtere CDP is listed but not there.
+    # add a CA wehre the CRL is signed by some other key
+
 
 
 # Gamache Trust Root 2018
@@ -110,7 +113,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
 
-            # whittlebury.pkilab.markgamache.com .  works great just another demo
+            # whittlebury.pkilab.markgamache.com .  SHA1 up the chain
                 $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "whittlebury.pkilab.markgamache.com" --signer "Gamache Issuer 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
                 #$did | ConvertFrom-Json
                 #send with no chain
@@ -172,6 +175,30 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         $oldSAICACert = "$($certBack.basePath)/certold.rem"
 
 
+        
+    
+    # Gamache Some Assurance ICA 2019  new
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Some Assurance ICA 2019" --signer "Gamache Int CA 2018" --validfrom marchOf2018 --validto dtPlusFiveYears --keysize 2048 --pathlength 0
+        $certBack = $did | ConvertFrom-Json
+
+        #AIA
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii -NoNewline
+        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
+        
+
+        #crl
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii -NoNewline
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Some Assurance ICA 2019" --validfrom dtMinusTenMin --validto dtPlusOneYear 
+
+        #crl not copied so that some clients will fail
+            # Nick-Nack.pkilab.markgamache.com we this one should be good cert but chain using old ICA.  
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Nick-Nack.pkilab.markgamache.com" --signer "Gamache Some Assurance ICA 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            $certBack = $did | ConvertFrom-Json
+            $certBack 
+    
+    
+    
     # Gamache Some Assurance ICA 2018  new
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Some Assurance ICA 2018" --signer "Gamache Int CA 2018" --validfrom marchOf2018 --validto dtPlusFiveYears --keysize 2048 --pathlength 0
         $certBack = $did | ConvertFrom-Json
