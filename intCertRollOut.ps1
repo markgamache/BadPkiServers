@@ -308,7 +308,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "gustice.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # RadioStar.pkilab.markgamache.com this site has not issues. It redirects to a failed site to show redircert confusion for users.
+             # RadioStar.pkilab.markgamache.com this site has not issues. 
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "RadioStar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
@@ -365,6 +365,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
             #  mega.pkilab.markgamache.com the HUGE cain
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "mega.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
+             #  trading.pkilab.markgamache.com will redirect to yang, which is bad
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "trading.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
             #make big chain
