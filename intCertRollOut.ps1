@@ -402,10 +402,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #gc $longInt >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
             #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
 
-            #hopefully tls 1 and fails in some browser
+            #hopefully tls 1 and fails in some browser.  NGINX can only pick one choice for tls version  =(
              #  slicks.pkilab.markgamache.com cert is good for reference
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "slicks.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "slicks.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
 
            
 
