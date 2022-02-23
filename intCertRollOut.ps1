@@ -308,8 +308,12 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "gustice.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # RadioStar.pkilab.markgamache.com this site has not issues. 
+             # RadioStar.pkilab.markgamache.com this site has noo issues. 
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "RadioStar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
+             # Cheswicke.pkilab.markgamache.com this site has no TLS issues. sabotaged by Public-Key-Pins
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Cheswicke.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
              # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
@@ -350,7 +354,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
 
-             #  TheBlackGoose.pkilab.markgamache.com cert is good, but name disallowed by issuer 
+             #  TheBlackGoose.pkilab.markgamache.com cert is good, but client auth 
             $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "TheBlackGoose.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 

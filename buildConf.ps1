@@ -254,18 +254,18 @@ server {
 "@
 
 
-$crankSSLSplat = @"
+$chesSSLSplat = @"
 
 server {
 
     listen   443 ssl;
-    server_name slicks.pkilab.markgamache.com;
+    server_name Cheswicke.pkilab.markgamache.com;
     
-    ssl_certificate_key       /etc/nginx/pki/slicks.pkilab.markgamache.com/key.pem;
-    ssl_certificate    /etc/nginx/pki/slicks.pkilab.markgamache.com/certwithchain.pem;
+    ssl_certificate_key       /etc/nginx/pki/Cheswicke.pkilab.markgamache.com/key.pem;
+    ssl_certificate    /etc/nginx/pki/Cheswicke.pkilab.markgamache.com/certwithchain.pem;
     ssl_session_tickets off;
     gzip off;
-    ssl_protocols TLSv1;
+    ssl_protocols TLSv1 TLSv1.2 ;
     #ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
@@ -274,11 +274,11 @@ server {
     #ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
     #ssl_verify_depth 3;
     
-    root /var/www/slicks.pkilab.markgamache.com;
+    root /var/www/Cheswicke.pkilab.markgamache.com;
     index index.html index.htm index.nginx-debian.html;
 
     
-
+    add_header Public-Key-Pins 'pin-sha256="klO23nT2ehFDXCfx3eHTDRESMz3asj1muO+4aIdjiuY="; pin-sha256="633lt352PKRXbOwf4xSEa1M517scpD3l5f79xMD9r9Q="; max-age=2592000';
     add_header Strict-Transport-Security "max-age=45" always;
     
 
@@ -300,6 +300,10 @@ server {
     elseif($n -eq "trading.pkilab.markgamache.com")
     {
         $bigSrting += $tradeSSLSplat
+    }
+    elseif($n -eq "Cheswicke.pkilab.markgamache.com")
+    {
+        $bigSrting += $chesSSLSplat
     }
     elseif($n -eq "slicks.pkilab.markgamache.com")
     {
