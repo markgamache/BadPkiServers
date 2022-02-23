@@ -316,6 +316,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Cheswicke.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             #$did | ConvertFrom-Json
 
+            #bankofplace test if NC has to be trailing 
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "www.bankofplace.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            $did | ConvertFrom-Json
+
              # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "burrito.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --hash SHA1
             #$did | ConvertFrom-Json
