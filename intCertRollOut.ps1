@@ -20,7 +20,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
 
 # Gamache Trust Root 2018
-    $did = & python3 ./DoCAStuff.py --mode NewRootCA --basepath $baseP --name "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2048 --keysize 4096 --pathlength 2 --ncallowed "pkilab.markgamache.com,mtlspkilab.markgamache.com"
+    $did = & python3 ./DoCAStuff.py --mode NewRootCA --basepath $baseP --name "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2048 --keysize 4096 --pathlength 2 --ncallowed "pkilab.markgamache.com,mtlspkilab.markgamache.com,bankofplace"
     $certBack = $did | ConvertFrom-Json
     $rootCert = $certBack
 
@@ -312,9 +312,9 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "RadioStar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # Cheswicke.pkilab.markgamache.com this site has no TLS issues. sabotaged by Public-Key-Pins
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Cheswicke.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+             # Cheswicke.pkilab.markgamache.com this site has no TLS issues. sabotaged by Public-Key-Pins.  Public-Key-Pins are no longer a thing!!!
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "Cheswicke.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
 
              # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "burrito.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --hash SHA1
