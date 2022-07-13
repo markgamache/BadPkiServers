@@ -298,7 +298,7 @@ server {
     }
     elseif($n -eq "banking.pkilab.markgamache.com")
     {
-        $bigSrting += $bankSSLSplat
+        #$bigSrting += $bankSSLSplat
     }
     elseif($n -eq "trading.pkilab.markgamache.com")
     {
