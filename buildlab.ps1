@@ -22,8 +22,8 @@ Param
 & sudo apt  install awscli -y
 
 & apt install awscli -y
-#& apt install nginx -y
-#& apt-get install nginx-extras -y
+& apt install nginx -y
+& apt-get install nginx-extras -y
 & sudo apt install net-tools
 cd .. 
 
