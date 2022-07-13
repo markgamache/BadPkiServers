@@ -451,6 +451,86 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item "$($baseP)/thesealion/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com/thesealion.pem" 
         Copy-Item "$($baseP)/thesealion/key.pem" "/var/www/clientcerts.pkilab.markgamache.com/thesealion.key" 
 
+
+
+    #adding two Ints and two issuers to test using the untrusted settings in OSs
+    # Gamache Int CA To Trust 2018 
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA To Trust 2018" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1
+        $certBack = $did | ConvertFrom-Json
+        $intCA = $certBack
+
+        #AIA
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii -NoNewline
+        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
+
+        #crl  
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii -NoNewline
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA To Trust 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
+        $crlBack = $did | ConvertFrom-Json
+        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
+        $longInt = "$($certBack.basePath)/cert.pem"
+		
+    # Gamache Server To Trust ICA  
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Server To Trust ICA" --signer "Gamache Int CA To Trust 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 0
+        $certBack = $did | ConvertFrom-Json
+
+        #AIA
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii -NoNewline
+        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
+
+        #crl
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii -NoNewline
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Server To Trust ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear 
+        $crlBack = $did | ConvertFrom-Json
+        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
+
+    
+
+        # toTrust.pkilab.markgamache.com .
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "toTrust.pkilab.markgamache.com" --signer "Gamache Server To Trust ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            $did | ConvertFrom-Json
+
+    # Gamache Int CA To UnTrust 2018 
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA To UnTrust 2018" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1
+        $certBack = $did | ConvertFrom-Json
+        $intCA = $certBack
+
+        #AIA
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii -NoNewline
+        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
+
+        #crl  
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii -NoNewline
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA To UnTrust 2018" --validfrom dtMinusTenMin --validto dtPlusOneYear 
+        $crlBack = $did | ConvertFrom-Json
+        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
+        $longInt = "$($certBack.basePath)/cert.pem"
+		
+    # Gamache Server To UnTrust ICA  
+        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Server To UnTrust ICA" --signer "Gamache Int CA To UnTrust 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 0
+        $certBack = $did | ConvertFrom-Json
+
+        #AIA
+        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt"  -Encoding ascii -NoNewline
+        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
+
+        #crl
+        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
+        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt"  -Encoding ascii -NoNewline
+        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Server To UnTrust ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear 
+        $crlBack = $did | ConvertFrom-Json
+        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
+
+    
+
+        # toUnTrust.pkilab.markgamache.com .
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "toUnTrust.pkilab.markgamache.com" --signer "Gamache Server To UnTrust ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
+            $did | ConvertFrom-Json
+
+
 #perms on the keys
 
 & chmod -R 777 /etc/nginx/pki/*
