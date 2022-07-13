@@ -33,7 +33,7 @@ server {
 
 '@
 
-$bigSrting += $defSplat
+#$bigSrting += $defSplat
 
 
 #holds client certs
