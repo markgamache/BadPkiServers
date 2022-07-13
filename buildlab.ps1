@@ -8,8 +8,8 @@ Param
 
 )
 
-& apt-get upgrade -y
 & apt update -y
+& apt-get upgrade -y
 & apt autoremove -y
 & apt upgrade -y 
 & curl https://get.acme.sh | sh
