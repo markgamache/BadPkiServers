@@ -325,7 +325,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             #$did | ConvertFrom-Json
 
             # marrion.pkilab.markgamache.com noekus
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "marrion.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --noekus
+            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "marrion.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --noeku
             $did | ConvertFrom-Json
 
             # magichead.pkilab.markgamache.com the intent is to send the issuer, but not the int CA 
