@@ -33,7 +33,7 @@ cd ..
 
 cd ./BadPkiServers/ 
 
-curl https://ssl-config.mozilla.org/ffdhe2048.txt > /path/to/dhparam
+curl https://ssl-config.mozilla.org/ffdhe2048.txt > /etc/nginx/pki/dhparam
 
 if($BuildType -eq "main")
 {
