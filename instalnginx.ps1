@@ -22,7 +22,7 @@
 & wget https://nginx.org/download/nginx-1.18.0.tar.gz && tar zxvf nginx-1.18.0.tar.gz
 #& wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz && tar xzvf pcre-8.44.tar.gz
 
-& wget https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz/download -O pcre-8.44.tar.gz && tar xzvf pcre-8.44.tar.gz
+& wget https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz/download -O pcre-8.45.tar.gz && tar xzvf pcre-8.44.tar.gz
 
 # zlib version 1.2.11
 & wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz
@@ -93,7 +93,7 @@ function Install-NginxByName([string]$name)
     --with-stream_realip_module `
     --with-stream_ssl_preread_module `
     --with-compat `
-    --with-pcre=../pcre-8.44 `
+    --with-pcre=../pcre-8.45 `
     --with-pcre-jit `
     --with-zlib=../zlib-1.2.11 `
     --with-openssl=../openssl-1.1.1j `
