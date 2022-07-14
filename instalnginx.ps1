@@ -15,9 +15,9 @@
 & apt install libxslt-dev -y
 & apt install libxml2-dev -y
 & apt-get install libgd-dev -y
-& curl https://get.acme.sh | sh
+#& curl https://get.acme.sh | sh
 & snap install core; snap refresh core
-& snap install --classic certbot
+#& snap install --classic certbot
 
 & wget https://nginx.org/download/nginx-1.18.0.tar.gz && tar zxvf nginx-1.18.0.tar.gz
 #& wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz && tar xzvf pcre-8.44.tar.gz
@@ -147,7 +147,7 @@ WantedBy=multi-user.target
 #Remove-Item -Recurse -Force ./pcre-8.44
 #Remove-Item -Recurse -Force ./zlib-1.2.11
 #Remove-Item -Recurse -Force ./openssl-1.1.1j
-Install-NginxByName -name nginxx
+Install-NginxByName -name nginx
 #Install-NginxByName -name nginx2
 
 #& chown -R QQmarkgamache /home/QQmarkgamache

@@ -12,19 +12,18 @@ Param
 & apt-get upgrade -y
 & apt autoremove -y
 & apt upgrade -y 
-& curl https://get.acme.sh | sh
+#& curl https://get.acme.sh | sh
 & snap install core; snap refresh core
 & snap install --classic certbot
 & apt install python3-pip -y
 & pip install mock
 & pip install cryptography --upgrade
 
-& sudo apt  install awscli -y
 
 & apt install awscli -y
-& apt install nginx -y
-& apt-get install nginx-extras -y
-& sudo apt install net-tools
+#& apt install nginx -y
+#& apt-get install nginx-extras -y
+& apt install net-tools
 cd .. 
 
 & git clone https://github.com/markgamache/labPkiPy.git
