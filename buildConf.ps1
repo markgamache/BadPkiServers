@@ -314,7 +314,7 @@ server {
 
 #copy the conf  $bigSrting to home
 Copy-Item /etc/nginx/sites-available/default /etc/nginx/sites-available/default.old
-$bigSrting | Out-File -Encoding ascii -FilePath /etc/nginx/sites-available/default
+$bigSrting | Out-File -Encoding ascii -FilePath /etc/nginx/sites-available/default -Append
 
 & chmod -R 777 /var/www/*
 
