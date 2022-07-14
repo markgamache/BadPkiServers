@@ -39,6 +39,7 @@ function Install-NginxByName([string]$name)
         return
     }
 
+    & mkdir "/etc/$($name)" 
     
     & cd nginx-1.18.0
     #Read-Host -Prompt "look pwd" 
