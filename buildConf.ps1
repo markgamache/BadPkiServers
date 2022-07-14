@@ -302,11 +302,11 @@ server {
     }
     elseif($n -eq "trading.pkilab.markgamache.com")
     {
-        $bigSrting += $tradeSSLSplat
+        #$bigSrting += $tradeSSLSplat
     }
     elseif($n -eq "Cheswicke.pkilab.markgamache.com")
     {
-        $bigSrting += $chesSSLSplat
+        #$bigSrting += $chesSSLSplat
     }
     elseif($n -eq "slicks.pkilab.markgamache.com")
     {
