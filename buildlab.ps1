@@ -67,7 +67,7 @@ else
 
 }
 
-
+& systemctl unmask nginx.service
 & systemctl reload nginx
 
 Start-Sleep -Seconds 2
