@@ -29,8 +29,12 @@ cd ..
 & git clone https://github.com/markgamache/labPkiPy.git
 
 & mkdir /etc/nginx/pki
+& mkdir /etc/nginx/sites-enabled
 
 cd ./BadPkiServers/ 
+
+& cp ./default /etc/nginx/sites-enabled/default
+& Copy-Item -Force ./nginx.conf /etc/nginx/nginx.conf
 
 curl https://ssl-config.mozilla.org/ffdhe2048.txt > /etc/nginx/pki/dhparam
 
