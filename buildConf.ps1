@@ -173,7 +173,7 @@ server {
     root /var/www/$($n);
     index index.html index.htm index.nginx-debian.html;
 
-    ##ssl_protocols TLSv1.2;
+    ssl_protocols TLSv1.1 TLSv1.2;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
@@ -197,7 +197,7 @@ server {
     ssl_certificate    /etc/nginx/pki/trading.pkilab.markgamache.com/certwithchain.pem;
     ssl_session_tickets off;
     gzip off;
-    ##ssl_protocols TLSv1.2;
+    ssl_protocols TLSv1.1 TLSv1.2;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
@@ -230,7 +230,7 @@ server {
     ssl_certificate    /etc/nginx/pki/banking.pkilab.markgamache.com/certwithchain.pem;
     ssl_session_tickets off;
     gzip off;
-    ##ssl_protocols TLSv1.2;
+    ssl_protocols TLSv1.1 TLSv1.2;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
@@ -268,7 +268,7 @@ server {
     ssl_certificate    /etc/nginx/pki/Cheswicke.pkilab.markgamache.com/certwithchain.pem;
     ssl_session_tickets off;
     gzip off;
-    ##ssl_protocols TLSv1 TLSv1.2 ;
+    ssl_protocols TLSv1.1 TLSv1.2;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
