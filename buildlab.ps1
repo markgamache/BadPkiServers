@@ -21,8 +21,8 @@ Param
 
 
 & apt install awscli -y
-#& apt install nginx -y
-#& apt-get install nginx-extras -y
+& apt install nginx -y
+& apt-get install nginx-extras -y
 & apt install net-tools
 cd .. 
 
@@ -37,10 +37,11 @@ cd ./BadPkiServers/
 & cp ./options-ssl-nginx.conf /etc/nginx/labpki/
 & cp ./ssl-dhparams.pem /etc/nginx/labpki/
 
-& cp ./default /etc/nginx/sites-enabled/default
-& Copy-Item -Force ./nginx.conf /etc/nginx/nginx.conf
+#used by no apt install of nginx 
+#& cp ./default /etc/nginx/sites-enabled/default
+#& Copy-Item -Force ./nginx.conf /etc/nginx/nginx.conf
 
-curl https://ssl-config.mozilla.org/ffdhe2048.txt > /etc/nginx/pki/dhparam
+
 
 if($BuildType -eq "main")
 {
