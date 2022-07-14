@@ -164,9 +164,10 @@ server {
 
     listen   443 ssl;
         
-    ssl_certificate_key       /etc/nginx/pki/$($n)/key.pem;
+    
     ssl_certificate    /etc/nginx/pki/$($n)/certwithchain.pem;
-    ssl_session_tickets off;
+    ssl_certificate_key       /etc/nginx/pki/$($n)/key.pem;
+    #ssl_session_tickets off;
     gzip off;
 
     server_name $($n);
@@ -192,7 +193,7 @@ server {
     
     ssl_certificate_key       /etc/nginx/pki/trading.pkilab.markgamache.com/key.pem;
     ssl_certificate    /etc/nginx/pki/trading.pkilab.markgamache.com/certwithchain.pem;
-    ssl_session_tickets off;
+    #ssl_session_tickets off;
     gzip off;
     include /etc/nginx/labpki/options-ssl-nginx.conf;
     ssl_dhparam /etc/nginx/labpki/ssl-dhparams.pem;
