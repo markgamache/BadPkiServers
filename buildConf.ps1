@@ -177,7 +177,7 @@ server {
     ssl_ciphers         HIGH:!aNULL:!MD5;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-    ssl_prefer_server_ciphers off;
+    ssl_prefer_server_ciphers on;
     #ssl_dhparam /etc/nginx/pki/dhparam;
 
     ##add_header Strict-Transport-Security "max-age=45" always;
@@ -202,7 +202,7 @@ server {
     ssl_ciphers         HIGH:!aNULL:!MD5;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-    ssl_prefer_server_ciphers off;
+    ssl_prefer_server_ciphers on;
     #ssl_dhparam /etc/nginx/pki/dhparam;
     
     root /var/www/trading.pkilab.markgamache.com;
@@ -236,7 +236,7 @@ server {
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_ciphers         HIGH:!aNULL:!MD5;
-    ssl_prefer_server_ciphers off;
+    ssl_prefer_server_ciphers on;
     ssl_verify_client       on;
     ssl_client_certificate /etc/nginx/pki/clientVer.pem;
     #ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
@@ -274,7 +274,7 @@ server {
     ssl_protocols TLSv1.1 TLSv1.2;
     #ssl_protocols TLSv1.2 TLSv1.3;
     #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-    ssl_prefer_server_ciphers off;
+    ssl_prefer_server_ciphers on;
     #ssl_verify_client       on;
     #ssl_client_certificate /etc/nginx/pki/clientVer.pem;
     #ssl_trusted_certificate /etc/nginx/pki/Gamache Trust Root 2018/cert.pem;
