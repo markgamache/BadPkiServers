@@ -14,7 +14,7 @@ Param
 & apt upgrade -y 
 #& curl https://get.acme.sh | sh
 & snap install core; snap refresh core
-#& snap install --classic certbot
+& snap install --classic certbot
 & apt install python3-pip -y
 & pip install mock
 & pip install cryptography --upgrade
@@ -29,9 +29,13 @@ cd ..
 & git clone https://github.com/markgamache/labPkiPy.git
 
 & mkdir /etc/nginx/pki
+& mkdir /etc/nginx/labpki
 & mkdir /etc/nginx/sites-enabled
 
 cd ./BadPkiServers/ 
+
+& cp ./options-ssl-nginx.conf /etc/nginx/labpki/
+& cp ./ssl-dhparams.pem /etc/nginx/labpki/
 
 & cp ./default /etc/nginx/sites-enabled/default
 & Copy-Item -Force ./nginx.conf /etc/nginx/nginx.conf
