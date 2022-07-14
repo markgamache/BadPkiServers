@@ -146,7 +146,7 @@ WantedBy=multi-user.target
 #Remove-Item -Recurse -Force ./pcre-8.44
 #Remove-Item -Recurse -Force ./zlib-1.2.11
 #Remove-Item -Recurse -Force ./openssl-1.1.1j
-Install-NginxByName -name nginx
+Install-NginxByName -name nginxx
 #Install-NginxByName -name nginx2
 
 #& chown -R QQmarkgamache /home/QQmarkgamache
