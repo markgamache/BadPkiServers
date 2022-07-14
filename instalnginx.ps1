@@ -25,7 +25,7 @@
 & wget https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz/download -O pcre-8.45.tar.gz && tar xzvf pcre-8.45.tar.gz
 
 # zlib version 1.2.11
-& wget https://www.zlib.net/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz
+& wget https://zlib.net/fossils/zlib-1.2.11.tar.gz && tar xzvf zlib-1.2.11.tar.gz
 & wget https://www.openssl.org/source/openssl-1.1.1j.tar.gz && tar xzvf openssl-1.1.1j.tar.gz
 #https://www.openssl.org/source/openssl-1.1.1j.tar.gz
 
