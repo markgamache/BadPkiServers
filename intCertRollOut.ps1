@@ -37,7 +37,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
     $crlBack = $did | ConvertFrom-Json
     Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
 
-    <#
+    
 
     # Gamache Int CA 1 
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 0
@@ -452,7 +452,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
         Copy-Item "$($baseP)/thesealion/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com/thesealion.pem" 
         Copy-Item "$($baseP)/thesealion/key.pem" "/var/www/clientcerts.pkilab.markgamache.com/thesealion.key" 
 
-        #>
+        
 
     #adding two Ints and two issuers to test using the untrusted settings in OSs
     # Gamache Int CA To Trust 2018 
