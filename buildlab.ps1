@@ -18,7 +18,7 @@ Param
 & apt install python3-pip -y
 & pip install mock
 & pip install cryptography --upgrade
-
+& python3 -m pip install --upgrade pyopenssl
 
 & apt install awscli -y
 
