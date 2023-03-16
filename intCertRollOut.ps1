@@ -81,52 +81,6 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
 
-<#
-    # Gamache Int CA 1776 
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom dtMinusTenMin --validto janOf2028 --keysize 2048 --pathlength 1 --hash SHA1
-        $certBack = $did | ConvertFrom-Json
-        $intCA = $certBack
-
-        #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii -NoNewline
-        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
-
-        #crl  
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii -NoNewline
-        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Int CA 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear 
-        $crlBack = $did | ConvertFrom-Json
-        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
-        
-
-        # Gamache Issuer 1776
-        $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Issuer 1776" --signer "Gamache Int CA 1776" --validfrom dtMinusTenMin --validto janOf2028 --keysize 2048 --pathlength 0
-        $certBack = $did | ConvertFrom-Json
-        $intCA = $certBack
-
-        #AIA
-        "$($baseHTTP)$($certBack.serial).crt" | Out-File -FilePath "$($certBack.basePath)/aia.txt" -Encoding ascii -NoNewline
-        Copy-Item -Force  "$($certBack.DERFile)" "$($artifacts)/$($certBack.serial).crt"
-
-        #crl  
-        "badf00d" | Out-File -FilePath "$($certBack.basePath)/revoked.txt"  -Encoding ascii
-        "$($baseHTTP)$($certBack.serial).crl" | Out-File -FilePath "$($certBack.basePath)/cdp.txt" -Encoding ascii -NoNewline
-        $did = & python3 ./DoCAStuff.py --mode SignCRL --basepath $baseP --signer "Gamache Issuer 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear 
-        $crlBack = $did | ConvertFrom-Json
-        Copy-Item -Force $crlBack.basePath "$($artifacts)/$($certBack.serial).crl"
-
-
-
-            # whittlebury.pkilab.markgamache.com .  SHA1 up the chain
-                $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "whittlebury.pkilab.markgamache.com" --signer "Gamache Issuer 1776" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048
-                #$did | ConvertFrom-Json
-                #send with no chain
-                $certBack = $did | ConvertFrom-Json
-                $certBack 
-                Remove-Item "$($certBack.basePath)/certwithchain.pem"
-                cp "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" 
-    #>
-
     # Gamache Int CA 2018 
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 2018" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1
         $certBack = $did | ConvertFrom-Json
@@ -299,14 +253,10 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
         #the big list of messups
 
-             # disher.pkilab.markgamache.com the cert should have CN, but no san  no small keys  =(
-            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "disher.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 1024 
-            #$did | ConvertFrom-Json
-
-
+        <#
             # banking.pkilab.markgamache.com mTLS with showing CAs
-            $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            $did | ConvertFrom-Json
+            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
+            #$did | ConvertFrom-Json
 
             # gustice.pkilab.markgamache.com mTLS for demo, so banking is a suprise
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "gustice.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
@@ -324,9 +274,6 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "www.bankofplace.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-             # burrito.pkilab.markgamache.com the cert should have CN, but no san  SHA is banned  =(
-            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "burrito.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --hash SHA1
-            #$did | ConvertFrom-Json
 
             # marrion.pkilab.markgamache.com noekus
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "marrion.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 --noeku
@@ -366,10 +313,15 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "TheBlackGoose.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
+            #>
+
+
              #  reference.pkilab.markgamache.com cert is good for reference
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "reference.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
+
+            <#
              #  OvaltineJenkins.newpkilab.markgamache.com  name allowed by ICA, but banned at root.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "OvaltineJenkins.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
@@ -409,19 +361,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             Copy-Item "$($baseP)/lassie/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com/lassie.pem" 
             Copy-Item "$($baseP)/lassie/key.pem" "/var/www/clientcerts.pkilab.markgamache.com/lassie.key" 
 
-            #chain wiht cert not first is a no good scenerio 
-            #  racecar.pkilab.markgamache.com the cert should have CN, but no san
-            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "racecar.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            #$did | ConvertFrom-Json
-            #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" > "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-            #gc $oldHACert > "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-            #gc $longInt >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-            #gc "$($baseP)/racecar.pkilab.markgamache.com/cert.pem" >> "$($baseP)/racecar.pkilab.markgamache.com/certwithchain.pem"
-
-            #hopefully tls 1 and fails in some browser.  NGINX can only pick one choice for tls version  =(
-             #  slicks.pkilab.markgamache.com cert is good for reference
-            #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "slicks.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
-            #$did | ConvertFrom-Json
+            #>
 
            
 
