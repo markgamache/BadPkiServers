@@ -81,7 +81,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
 
-
+<#
     # Gamache Int CA 1776 
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 1776" --signer "Gamache Trust Root 2018" --validfrom dtMinusTenMin --validto janOf2028 --keysize 2048 --pathlength 1 --hash SHA1
         $certBack = $did | ConvertFrom-Json
@@ -125,7 +125,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
                 $certBack 
                 Remove-Item "$($certBack.basePath)/certwithchain.pem"
                 cp "$($certBack.basePath)/cert.pem" "$($certBack.basePath)/certwithchain.pem" 
-
+    #>
 
     # Gamache Int CA 2018 
         $did = & python3 ./DoCAStuff.py --mode NewSubCA --basepath $baseP --name "Gamache Int CA 2018" --signer "Gamache Trust Root 2018" --validfrom janOf2018 --validto janOf2028 --keysize 2048 --pathlength 1

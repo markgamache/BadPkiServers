@@ -9,4 +9,4 @@ cd /etc/nginx/sites-available
 rm ./default
 ren ./default.old ./default
 cd /home/ubuntu/BadPkiServers
-aws s3 rm --recursive s3://certsync/pki
+#aws s3 rm --recursive s3://certsync/pki
