@@ -253,7 +253,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
 
         #the big list of messups
 
-        <#
+        
             # banking.pkilab.markgamache.com mTLS with showing CAs
             #$did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "banking.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             #$did | ConvertFrom-Json
@@ -313,7 +313,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did = & python3 ./DoCAStuff.py --mode NewLeafClient --basepath $baseP --name "TheBlackGoose.pkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
 
-            #>
+            
 
 
              #  reference.pkilab.markgamache.com cert is good for reference
@@ -321,7 +321,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             $did | ConvertFrom-Json
 
 
-            <#
+            
              #  OvaltineJenkins.newpkilab.markgamache.com  name allowed by ICA, but banned at root.
             $did = & python3 ./DoCAStuff.py --mode NewLeafTLS --basepath $baseP --name "OvaltineJenkins.newpkilab.markgamache.com" --signer "Gamache Server HA ICA" --validfrom dtMinusTenMin --validto dtPlusOneYear --keysize 2048 
             $did | ConvertFrom-Json
@@ -361,7 +361,7 @@ $baseHTTP = "http://pki.pkilab.markgamache.com/"
             Copy-Item "$($baseP)/lassie/certwithchain.pem" "/var/www/clientcerts.pkilab.markgamache.com/lassie.pem" 
             Copy-Item "$($baseP)/lassie/key.pem" "/var/www/clientcerts.pkilab.markgamache.com/lassie.key" 
 
-            #>
+            #
 
            
 
